@@ -1,6 +1,5 @@
 package com.example.api_agent_service;
-
-import com.example.api_agent_service.mapper.ReviewMapper;
+import com.example.api_agent_service.ReviewProject.ReviewMapper;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -20,6 +19,5 @@ public class Main implements CommandLineRunner {
 
         System.out.println(this.reviewMapper.findByPorN("P"));
         System.out.println(this.reviewMapper.findByPorN("N"));
-
     }
 }

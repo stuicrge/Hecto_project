@@ -20,7 +20,4 @@ public interface ReviewMapper {
     @Select("SELECT COUNT(*) FROM TEST_REVIEW WHERE PorN = #{PorN}")
     int findByPorN(@Param("PorN") String PorN);
 
-
-
-
 }

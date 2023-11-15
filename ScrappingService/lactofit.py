@@ -19,7 +19,6 @@ driver.get("https://ckdhcmall.co.kr/prdView.do?prdCode=G2303161200_0051")
 driver.maximize_window()
 
 
-
 action = driver.find_element(By.CSS_SELECTOR, 'body')
 time.sleep(2)
 action.send_keys(Keys.END)
@@ -29,26 +28,23 @@ time.sleep(2)
 wait = WebDriverWait(driver, 10)  # 10 seconds maximum wait time
 review_button = wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="reviewTab"]/a')))
 review_button.click()
-time.sleep(2)
+time.sleep(4)
 
-#
-page_div = driver.find_elements(By.CLASS_NAME, 'paging.reviewPage')
-page_num=len(page_div)
+page_div = driver.find_element(By.CLASS_NAME, 'paging.reviewPage')
+page_tag = page_div.find_elements(By.TAG_NAME, 'a')
+page_num=len(page_tag)
 
 
-if page_num >= 5:
-    page_num = 5
+if page_num >= 20:
+    
+    page_num = 20
 
     for i in range(0, page_num-1):
 
+
         bs = BeautifulSoup(driver.page_source, 'html.parser')
-
-        product_review = bs.find(class_="rv_list_wrap.productReview")
+        product_review = bs.find(class_="rv_info")
         product_reviews = product_review.find_all("div")
-        
-        print(product_review)
-        print(product_reviews)
-
 
 
         page_button = driver.find_element(By.XPATH,f'//*[@id="prdDetail"]/div[1]/div/div/div[2]/div/div[3]/div[3]/a[{i+1}]')        
@@ -66,13 +62,9 @@ if page_num >= 5:
                 product_name = product_element.text
             except AttributeError:
                 continue
-
             
             print(content)
             print(product_name)
                 
-            #productlist.append(product_name)
-            #contentlist.append(content)
-
 print("finish")
-driver.quit()
+#driver.quit()

@@ -19,5 +19,7 @@ public class Main implements CommandLineRunner {
 
         System.out.println(this.reviewMapper.findByPorN("P"));
         System.out.println(this.reviewMapper.findByPorN("N"));
+
+
     }
 }

@@ -45,7 +45,7 @@ def reviewScrapping():
     review_button.click()
 
     time.sleep(2)
-
+ 
 
 #    if product_name is not None:
 #        print("상품 이름: " + product_name.text)

@@ -8,6 +8,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import pandas as pd 
 
+# 타사 제품 크롤링 서비스
 
 productlist = []
 contentlist = []

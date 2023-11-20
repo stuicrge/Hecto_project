@@ -17,7 +17,8 @@ public interface ReviewMapper {
     //  @Select("SELECT * FROM TEST_REVIEW WHERE id = #{id}")
     //  Review findById(@Param("id") int id);
 
-    @Select("SELECT COUNT(*) FROM TEST_REVIEW WHERE PorN = #{PorN}")
+
+    @Select("SELECT COUNT(*) FROM TEST_TTOBAK_REVIEW WHERE PorN = #{PorN}")
     int findByPorN(@Param("PorN") String PorN);
 
 }

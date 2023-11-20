@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mysql://210.110.33.220:3306/reviewdb
+    url: jdbc:mysql://210.110.33.220:3306/reviewdb # 이코드는 host주소부분을 멘토님 주소로 바꾸면 될 것 같습니다
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: 'newuser'
     password: '1234'

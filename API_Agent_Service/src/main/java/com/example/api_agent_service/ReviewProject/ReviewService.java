@@ -16,7 +16,7 @@ public class ReviewService {
     }
 
     // 다른 서비스 메소드들...
-    public int getCountByPorN(String PorN) {
-        return reviewMapper.findByPorN(PorN);
+    public int getCountByAnswer(String answer) {
+        return reviewMapper.findByAnswer(answer);
     }
 }

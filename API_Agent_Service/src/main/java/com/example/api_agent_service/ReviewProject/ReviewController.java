@@ -17,10 +17,10 @@ public class ReviewController {
         this.reviewService = reviewService;
     }
 
-    @GetMapping("/findByPorN")
-    public ResponseEntity<Integer> findByPorN(@RequestParam("PorN") String PorN) {
+    @GetMapping("/findByAnswer")
+    public ResponseEntity<Integer> findByAnswer(@RequestParam("answer") String answer) {
         try {
-            int result = reviewService.getCountByPorN(PorN);
+            int result = reviewService.getCountByAnswer(answer);
             return ResponseEntity.ok(result);
         } catch (Exception e) {
             // Handle exceptions appropriately, e.g., log and return a 500 Internal Server Error

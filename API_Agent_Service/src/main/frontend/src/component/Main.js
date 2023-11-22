@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import 'bootstrap/dist/css/bootstrap.min.css'; // Correct import statement
 import { Container, Nav, Navbar, NavDropdown } from 'react-bootstrap'; // Correct import statements
@@ -7,8 +7,8 @@ export default function Main() {
     const [answer, setAnswer] = useState('');
 
     useEffect(() => {
-        axios.get('/findByAnswer')
-            .then(response =>   setAnswer(response.data)   )
+        axios.get('/findByAnswer', { params: { answer: '긍정' } })
+            .then(response => setAnswer(response.data.result))
             .catch(error => console.log(error))
     }, []);
 
@@ -38,6 +38,7 @@ export default function Main() {
                 </Container>
             </Navbar>
             긍정후기갯수: {answer}
+            부정후기갯수: {answer}
         </div>
     );
 }

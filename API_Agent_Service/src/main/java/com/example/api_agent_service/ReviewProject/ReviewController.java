@@ -9,25 +9,29 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collections;
+import java.util.Map;
+
 @RestController
 public class ReviewController {
 
-    public  ReviewService reviewService;
-    public ReviewController( ReviewService reviewService) {
+    private final ReviewService reviewService;
+
+    @Autowired
+    public ReviewController(ReviewService reviewService) {
         this.reviewService = reviewService;
     }
 
     @GetMapping("/findByAnswer")
-    public String findByAnswer(@RequestParam("answer") String answer) {
+    public ResponseEntity<Map<String, Integer>> findByAnswer(@RequestParam("answer") String answer) {
         try {
             int result = reviewService.getCountByAnswer(answer);
-            return  result+"" ;
-//            return "  { \"result\" : result } ";
+            Map<String, Integer> response = Collections.singletonMap("result", result);
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
             // Handle exceptions appropriately, e.g., log and return a 500 Internal Server Error
-            //return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
-
-        return "" ;
     }
 }
+

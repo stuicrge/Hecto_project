@@ -1,5 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
+import 'bootstrap/dist/css/bootstrap-grid.min.css';
+
 
 function App() {
   const [hello, setHello] = useState('')

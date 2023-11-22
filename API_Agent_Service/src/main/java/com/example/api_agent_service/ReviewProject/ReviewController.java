@@ -18,13 +18,16 @@ public class ReviewController {
     }
 
     @GetMapping("/findByAnswer")
-    public ResponseEntity<Integer> findByAnswer(@RequestParam("answer") String answer) {
+    public String findByAnswer(@RequestParam("answer") String answer) {
         try {
             int result = reviewService.getCountByAnswer(answer);
-            return ResponseEntity.ok(result);
+            return  result+"" ;
+//            return "  { \"result\" : result } ";
         } catch (Exception e) {
             // Handle exceptions appropriately, e.g., log and return a 500 Internal Server Error
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            //return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
+
+        return "" ;
     }
 }

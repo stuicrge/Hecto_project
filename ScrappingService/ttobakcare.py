@@ -50,9 +50,37 @@ def reviewScrapping(before_date):
     while loop:
 
         bs = BeautifulSoup(driver.page_source, 'html.parser')
-        
+        review = bs.find(class_="board-list")
+        reviews = review.find_all("li")
+            
+        for i in range(1, len(reviews)-1):    
+            date = dt.datetime.strptime(reviews[i].select_one('.board-list-date').text, "%Y-%m-%d").date()
+
+            if date < before_date:
+                loop = False
+                break
+
+            try:
+                product_name = bs.find(class_='goods-name').text
+                print(product_name)
+                title = reviews[i].select_one('.board-list-title > span').get_text()
+                print(title)
+                content = reviews[i].select_one('.board-list-content > p').get_text().replace("\n", "")
+                print(content)
+                date = dt.datetime.strptime(reviews[i].select_one('.board-list-date').text, "%Y-%m-%d")
+                print(date)
+
+            except AttributeError as a :
+                continue
+            
+            productlist.append(product_name)
+            titlelist.append(title)
+            contentlist.append(content) 
+            datelist.append(date) 
+
         try: 
             paging_button = driver.find_element(By.CLASS_NAME, 'next')
+            time.sleep(2)
             if paging_button.is_displayed():
                 time.sleep(2)
                 paging_button.click()
@@ -62,33 +90,6 @@ def reviewScrapping(before_date):
             time.sleep(2)
             return
             
-        
-        review = bs.find(class_="board-list")
-        reviews = review.find_all("li")
-
-        for r in reviews:    
-            try:
-                product_name = bs.find(class_='goods-name').text
-                print(product_name)
-                title = r.select_one('.board-list-title > span').get_text()
-                print(title)
-                content = r.select_one('.board-list-content > p').get_text().replace("\n", "")
-                print(content)
-                date = dt.datetime.strptime(r.select_one('.board-list-date').text, "%Y-%m-%d")
-                print(date)
-
-            except AttributeError as a :
-                continue
-            
-
-            productlist.append(product_name)
-            titlelist.append(title)
-            contentlist.append(content) 
-            datelist.append(date) 
-
-            if date < before_date:
-                loop = False
-                break
 def main():
 
     # 상품 목록 스크랩 (전체 제품 스크랩)
@@ -96,7 +97,7 @@ def main():
     product_li = product_ul.find_elements(By.TAG_NAME, 'li')
 
     now_date = dt.datetime.now()
-    before_one_year = now_date + relativedelta(months=-5) # 1년 전
+    before_one_year = (now_date + relativedelta(years=-1)).date() # 1년 전
 
     # 페이지 이동
     for i in range(len(product_li)):

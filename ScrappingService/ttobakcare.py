@@ -9,6 +9,7 @@ from selenium.webdriver.support import expected_conditions as EC
 import pandas as pd 
 import datetime as dt
 from dateutil.relativedelta import relativedelta
+from selenium.common.exceptions import NoSuchElementException
 
 # csv파일에 담을 제품명,후기제목,후기내용,등록일자 리스트
 productlist = []
@@ -49,16 +50,23 @@ def reviewScrapping(before_date):
     while loop:
 
         bs = BeautifulSoup(driver.page_source, 'html.parser')
+        
+        try: 
+            paging_button = driver.find_element(By.CLASS_NAME, 'next')
+            if paging_button.is_displayed():
+                time.sleep(2)
+                paging_button.click()
+                time.sleep(2)
+        except NoSuchElementException:       
+            # if paging_button.is_displayed()==False:
+            time.sleep(2)
+            return
+            
+        
         review = bs.find(class_="board-list")
         reviews = review.find_all("li")
-        
-        paging_button = driver.find_element(By.CLASS_NAME, 'next')
-        time.sleep(2)
-        paging_button.click()
-        time.sleep(2)
 
-        for r in reviews:
-
+        for r in reviews:    
             try:
                 product_name = bs.find(class_='goods-name').text
                 print(product_name)
@@ -72,15 +80,15 @@ def reviewScrapping(before_date):
             except AttributeError as a :
                 continue
             
-            if date < before_date:
-                loop = False
-                break
 
             productlist.append(product_name)
             titlelist.append(title)
             contentlist.append(content) 
             datelist.append(date) 
 
+            if date < before_date:
+                loop = False
+                break
 def main():
 
     # 상품 목록 스크랩 (전체 제품 스크랩)
@@ -88,7 +96,7 @@ def main():
     product_li = product_ul.find_elements(By.TAG_NAME, 'li')
 
     now_date = dt.datetime.now()
-    before_one_year = now_date + relativedelta(years=-1) # 1년 전
+    before_one_year = now_date + relativedelta(months=-5) # 1년 전
 
     # 페이지 이동
     for i in range(len(product_li)):

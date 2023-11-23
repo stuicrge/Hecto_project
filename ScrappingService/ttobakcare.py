@@ -10,6 +10,7 @@ import pandas as pd
 import datetime as dt
 from dateutil.relativedelta import relativedelta
 from selenium.common.exceptions import NoSuchElementException
+from package.insertDB import insertDB
 
 # csv파일에 담을 제품명,후기제목,후기내용,등록일자 리스트
 productlist = []
@@ -50,9 +51,37 @@ def reviewScrapping(before_date):
     while loop:
 
         bs = BeautifulSoup(driver.page_source, 'html.parser')
-        
+        review = bs.find(class_="board-list")
+        reviews = review.find_all("li")
+            
+        for i in range(1, len(reviews)-1):    
+            date = dt.datetime.strptime(reviews[i].select_one('.board-list-date').text, "%Y-%m-%d").date()
+
+            if date < before_date:
+                loop = False
+                break
+
+            try:
+                product_name = bs.find(class_='goods-name').text
+                print(product_name)
+                title = reviews[i].select_one('.board-list-title > span').get_text()
+                print(title)
+                content = reviews[i].select_one('.board-list-content > p').get_text().replace("\n", "")
+                print(content)
+                
+                print(date)
+
+            except AttributeError as a :
+                continue
+            
+            productlist.append(product_name)
+            titlelist.append(title)
+            contentlist.append(content) 
+            datelist.append(date) 
+
         try: 
             paging_button = driver.find_element(By.CLASS_NAME, 'next')
+            time.sleep(2)
             if paging_button.is_displayed():
                 time.sleep(2)
                 paging_button.click()
@@ -62,33 +91,6 @@ def reviewScrapping(before_date):
             time.sleep(2)
             return
             
-        
-        review = bs.find(class_="board-list")
-        reviews = review.find_all("li")
-
-        for r in reviews:    
-            try:
-                product_name = bs.find(class_='goods-name').text
-                print(product_name)
-                title = r.select_one('.board-list-title > span').get_text()
-                print(title)
-                content = r.select_one('.board-list-content > p').get_text().replace("\n", "")
-                print(content)
-                date = dt.datetime.strptime(r.select_one('.board-list-date').text, "%Y-%m-%d")
-                print(date)
-
-            except AttributeError as a :
-                continue
-            
-
-            productlist.append(product_name)
-            titlelist.append(title)
-            contentlist.append(content) 
-            datelist.append(date) 
-
-            if date < before_date:
-                loop = False
-                break
 def main():
 
     # 상품 목록 스크랩 (전체 제품 스크랩)
@@ -96,7 +98,7 @@ def main():
     product_li = product_ul.find_elements(By.TAG_NAME, 'li')
 
     now_date = dt.datetime.now()
-    before_one_year = now_date + relativedelta(months=-5) # 1년 전
+    before_one_year = (now_date + relativedelta(years=-1)).date() # 1년 전
 
     # 페이지 이동
     for i in range(len(product_li)):
@@ -106,32 +108,33 @@ def main():
          
         try:
             #actions.perform()
-            time.sleep(4)
+            time.sleep(3)
             products.click()
-            time.sleep(4)
+            time.sleep(3)
             reviewScrapping(before_one_year)
         except Exception as e:
             #print('Error Message:', e) 
             ActionChains(driver).move_to_element(products)
             #rect = products.rect
             #print(f"rect={rect}")
-            time.sleep(4)
+            time.sleep(3)
             products.click()
-            time.sleep(4)
+            time.sleep(3)
             reviewScrapping(before_one_year)
         finally:
             print("end")
     
-        time.sleep(4)
+        time.sleep(3)
         driver.back()         
-        time.sleep(4)  
+        time.sleep(3) 
+    
+    driver.quit()
 
-if __name__ == '__main__':
-    main()
+main()
 
 data = {"name":productlist, "title":titlelist, "content":contentlist, "date":datelist}
 df = pd.DataFrame(data)
-print(df.head(104))
+print(df.head(10))
 
 df.to_csv("ttobakcare.csv", encoding = "utf-8-sig")
-driver.quit()
+#insertDB()

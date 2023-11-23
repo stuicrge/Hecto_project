@@ -11,6 +11,8 @@ import pandas as pd
 import datetime as dt
 from dateutil.relativedelta import relativedelta
 from apscheduler.schedulers.blocking import BlockingScheduler
+from package.insertDB import insertDB
+
 
 # csv파일에 담을 제품명,후기제목,후기내용,등록일자 리스트
 productlist = []
@@ -39,11 +41,6 @@ def reviewScrapping(before_date):
     empty = driver.find_element(By.CLASS_NAME, 'board-list-wrap.empty')
     print(empty.text)
     if(empty.text == "등록된 게시글이 없습니다."):
-        empty_product_name = driver.find_element(By.CLASS_NAME, 'goods-name').text
-        productlist.append(empty_product_name)
-        titlelist.append(None)
-        contentlist.append(None)
-        datelist.append(None)
         return
 
     loop = True
@@ -128,16 +125,21 @@ def main():
         time.sleep(4)
         driver.back()         
         time.sleep(4) 
-    data = {"name":productlist, "title":titlelist, "content":contentlist, "date":datelist}
-    df = pd.DataFrame(data)
-    print(df.head(104))
-
-    df.to_csv("ttobakcare.csv", encoding = "utf-8-sig")
+    
     driver.quit()
 
+    # 스크래핑한 데이터 -> 데이터프레임 -> csv파일 -> db table에 저장
+    data = {"name":productlist, "title":titlelist, "content":contentlist, "date":datelist}
+    df = pd.DataFrame(data) # 데이터 프레임
+    print(df.head(10))
+
+    df.to_csv("ttobakcare.csv", encoding = "utf-8-sig") #csv파일
+    insertDB() # DB table에 저장
+
+# 스케줄러
 sched = BlockingScheduler(timezone='Asia/Seoul')
 
-sched.add_job(main, 'cron', hour='12',minute='23')  
+sched.add_job(main, 'cron', hour='16',minute='6')  
 
 print('sched before~')
 try:

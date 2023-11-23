@@ -5,10 +5,15 @@ import { Container, Nav, Navbar, NavDropdown } from 'react-bootstrap'; // Correc
 
 export default function Main() {
     const [answer, setAnswer] = useState('');
+    const [answer2 , setAnswer2] = useState('');
 
     useEffect(() => {
-        axios.get('/findByAnswer', { params: { answer: '긍정' } })
-            .then(response => setAnswer(response.data.result))
+        axios.get('/findByAnswer', { params: { answer: '긍정' , answer2:'부정'} })
+            .then(response =>
+            {
+                setAnswer(response.data.positiveness);
+                setAnswer2(response.data.negativeness);
+    })
             .catch(error => console.log(error))
     }, []);
 
@@ -38,7 +43,7 @@ export default function Main() {
                 </Container>
             </Navbar>
             긍정후기갯수: {answer}
-            부정후기갯수: {answer}
+            부정후기갯수: {answer2}
         </div>
     );
 }

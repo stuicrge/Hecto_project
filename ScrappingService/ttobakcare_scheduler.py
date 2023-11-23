@@ -106,25 +106,25 @@ def main():
 
         try:
             #actions.perform()
-            time.sleep(4)
+            time.sleep(3)
             products.click()
-            time.sleep(4)
+            time.sleep(3)
             reviewScrapping(before_one_day)
         except Exception as e:
             #print('Error Message:', e) 
             ActionChains(driver).move_to_element(products)
             #rect = products.rect
             #print(f"rect={rect}")
-            time.sleep(4)
+            time.sleep(3)
             products.click()
-            time.sleep(4)
+            time.sleep(3)
             reviewScrapping(before_one_day)
         finally:
             print("end")
         
-        time.sleep(4)
+        time.sleep(3)
         driver.back()         
-        time.sleep(4) 
+        time.sleep(3) 
     
     driver.quit()
 

@@ -68,7 +68,11 @@ def reviewScrapping(before_date):
                 print(title)
                 content = reviews[i].select_one('.board-list-content > p').get_text().replace("\n", "")
                 print(content)
+<<<<<<< HEAD
                 
+=======
+                date = dt.datetime.strptime(reviews[i].select_one('.board-list-date').text, "%Y-%m-%d")
+>>>>>>> c3ed775536d52fb03139a77ea66a15973e71e98e
                 print(date)
 
             except AttributeError as a :

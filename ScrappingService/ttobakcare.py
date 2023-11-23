@@ -10,7 +10,7 @@ import pandas as pd
 import datetime as dt
 from dateutil.relativedelta import relativedelta
 from selenium.common.exceptions import NoSuchElementException
-from package.insertDB import insertDB
+#from package.insertDB import insertDB
 
 # csv파일에 담을 제품명,후기제목,후기내용,등록일자 리스트
 productlist = []
@@ -68,11 +68,7 @@ def reviewScrapping(before_date):
                 print(title)
                 content = reviews[i].select_one('.board-list-content > p').get_text().replace("\n", "")
                 print(content)
-<<<<<<< HEAD
                 
-=======
-                date = dt.datetime.strptime(reviews[i].select_one('.board-list-date').text, "%Y-%m-%d")
->>>>>>> c3ed775536d52fb03139a77ea66a15973e71e98e
                 print(date)
 
             except AttributeError as a :

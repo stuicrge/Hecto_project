@@ -20,5 +20,6 @@ public class Main implements CommandLineRunner {
         System.out.println(this.reviewMapper.findByAnswer("긍정"));
         System.out.println(this.reviewMapper.findByAnswer("부정"));
 
+
     }
 }

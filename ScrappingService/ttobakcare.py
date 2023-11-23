@@ -10,6 +10,7 @@ import pandas as pd
 import datetime as dt
 from dateutil.relativedelta import relativedelta
 from selenium.common.exceptions import NoSuchElementException
+from package.insertDB import insertDB
 
 # csv파일에 담을 제품명,후기제목,후기내용,등록일자 리스트
 productlist = []
@@ -67,7 +68,11 @@ def reviewScrapping(before_date):
                 print(title)
                 content = reviews[i].select_one('.board-list-content > p').get_text().replace("\n", "")
                 print(content)
+<<<<<<< HEAD
+                
+=======
                 date = dt.datetime.strptime(reviews[i].select_one('.board-list-date').text, "%Y-%m-%d")
+>>>>>>> c3ed775536d52fb03139a77ea66a15973e71e98e
                 print(date)
 
             except AttributeError as a :
@@ -107,32 +112,33 @@ def main():
          
         try:
             #actions.perform()
-            time.sleep(4)
+            time.sleep(3)
             products.click()
-            time.sleep(4)
+            time.sleep(3)
             reviewScrapping(before_one_year)
         except Exception as e:
             #print('Error Message:', e) 
             ActionChains(driver).move_to_element(products)
             #rect = products.rect
             #print(f"rect={rect}")
-            time.sleep(4)
+            time.sleep(3)
             products.click()
-            time.sleep(4)
+            time.sleep(3)
             reviewScrapping(before_one_year)
         finally:
             print("end")
     
-        time.sleep(4)
+        time.sleep(3)
         driver.back()         
-        time.sleep(4)  
+        time.sleep(3) 
+    
+    driver.quit()
 
-if __name__ == '__main__':
-    main()
+main()
 
 data = {"name":productlist, "title":titlelist, "content":contentlist, "date":datelist}
 df = pd.DataFrame(data)
-print(df.head(104))
+print(df.head(10))
 
 df.to_csv("ttobakcare.csv", encoding = "utf-8-sig")
-driver.quit()
+#insertDB()

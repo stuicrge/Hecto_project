@@ -24,15 +24,16 @@ public class ReviewController {
     }
 
     @GetMapping("/findByAnswer")
-    public ResponseEntity<Map<String, Integer>> findByCountAnswer(@RequestParam("answer") String answer,
-                                                             @RequestParam("answer2") String answer2) {
+    public ResponseEntity<Map<String, Integer>> findByCountAnswer(@RequestParam("productAnswer") String productAnswer,
+                                                             @RequestParam("productAnswer2") String productAnswer2,
+                                                                  @RequestParam("productName") String productName) {
         try {
+            System.out.println(productName);
+            System.out.println(productAnswer);
+            System.out.println(productAnswer2);
 
-            System.out.println(answer);
-            System.out.println(answer2);
-
-            int positiveness = reviewService.getCountByAnswer(answer);
-            int negativeness = reviewService.getCountByAnswer(answer2);
+            int positiveness = reviewService.getCountByAnswer(productName,productAnswer);
+            int negativeness = reviewService.getCountByAnswer(productName,productAnswer2);
 
             Map<String, Integer> response = new HashMap<>();
             response.put("positiveness", positiveness);

@@ -17,9 +17,8 @@ public class Main implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        System.out.println(this.reviewMapper.findByAnswer("긍정"));
-        System.out.println(this.reviewMapper.findByAnswer("부정"));
-
+        System.out.println(this.reviewMapper.findByAnswerCount("부정"));
+        System.out.println(this.reviewMapper.findByAnswerCount("긍정"));
 
     }
 }

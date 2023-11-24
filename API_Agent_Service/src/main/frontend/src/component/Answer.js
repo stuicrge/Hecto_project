@@ -1,21 +1,34 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import 'bootstrap/dist/css/bootstrap.min.css'; // Correct import statement
-import { Container, Nav, Navbar, NavDropdown } from 'react-bootstrap'; // Correct import statements
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Container, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 
-export default function Answer(){
-    const [answer, setAnswer] = useState('');
-    const [answer2 , setAnswer2] = useState('');
+export default function Answer() {
+    const [productAnswer, setAnswer] = useState('');
+    const [productAnswer2, setAnswer2] = useState('');
 
     useEffect(() => {
-        axios.get('/findByAnswer', { params: { answer: '긍정' , answer2:'부정'} })
-            .then(response =>
-            {
+        // Using an async function to fetch data
+        const fetchData = async () => {
+            try {
+                const encodedProductName = encodeURIComponent('[골프에디션] 오투부스터 (5포)');
+                const response = await axios.get('http://localhost:8080/findByAnswer', {
+                    params: { productName: encodedProductName, productAnswer: '긍정', productAnswer2: '부정' }
+                });
+
+                // Update state with fetched data
                 setAnswer(response.data.positiveness);
                 setAnswer2(response.data.negativeness);
-            })
-            .catch(error => console.log(error))
-    }, []);
+                console.log(response.data.positiveness);
+                console.log(response.data.negativeness);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
+        // Call the async function
+        fetchData();
+    }, []); // Empty dependency array to run the effect only once, similar to componentDidMount
 
     return (
         <div>
@@ -29,22 +42,26 @@ export default function Answer(){
                             <Nav.Link href="#link">Link</Nav.Link>
                             <NavDropdown title="Dropdown" id="basic-nav-dropdown">
                                 <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                                <NavDropdown.Item href="#action/3.2">
-                                    Another action
-                                </NavDropdown.Item>
+                                <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
                                 <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
                                 <NavDropdown.Divider />
-                                <NavDropdown.Item href="#action/3.4">
-                                    Separated link
-                                </NavDropdown.Item>
+                                <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
                             </NavDropdown>
                         </Nav>
                     </Navbar.Collapse>
                 </Container>
             </Navbar>
-            긍정후기갯수: {answer}
-            부정후기갯수: {answer2}
+            {/* Display fetched data */}
+            <div>
+                {/*<p>상품명 : </p>*/}
+                {/*<select>*/}
+                {/*    <option value={}>{}</option>*/}
+                {/*</select>*/}
+                긍정후기갯수: {productAnswer}
+            </div>
+            <div>
+                부정후기갯수: {productAnswer2}
+            </div>
         </div>
     );
-
 }

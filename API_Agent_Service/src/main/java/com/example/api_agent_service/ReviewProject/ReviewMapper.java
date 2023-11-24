@@ -21,6 +21,13 @@ public interface ReviewMapper {
 
 
     @Select("SELECT COUNT(*) FROM TEST_TTOBAK_REVIEW WHERE answer = #{answer}")
-    int findByAnswer(@Param("answer") String answer);
+    int findByAnswerCount(@Param("answer") String answer);
+
+
+    @Select("SELECT answer FROM TEST_TTOBAK_REVIEW WHERE productName = #{productName}")
+    String findByAnswers(@Param("productName") String productName);
+
+    @Select("SELECT COUNT(answer) FROM TEST_TTOBAK_REVIEW WHERE productName = #{productName} AND answer = #{answer}")
+    int selectAnswerCount(@Param("productName") String productName, @Param("answer") String answer);
 
 }

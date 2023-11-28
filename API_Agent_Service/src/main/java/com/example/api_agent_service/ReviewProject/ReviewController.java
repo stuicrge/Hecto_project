@@ -9,22 +9,41 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 public class ReviewController {
 
-    public  ReviewService reviewService;
-    public ReviewController( ReviewService reviewService) {
+    private final ReviewService reviewService;
+
+    @Autowired
+    public ReviewController(ReviewService reviewService) {
         this.reviewService = reviewService;
     }
 
     @GetMapping("/findByAnswer")
-    public ResponseEntity<Integer> findByAnswer(@RequestParam("answer") String answer) {
+    public ResponseEntity<Map<String, Integer>> findByCountAnswer(@RequestParam("productAnswer") String productAnswer,
+                                                             @RequestParam("productAnswer2") String productAnswer2,
+                                                                  @RequestParam("productName") String productName) {
         try {
-            int result = reviewService.getCountByAnswer(answer);
-            return ResponseEntity.ok(result);
+            System.out.println(productName);
+            System.out.println(productAnswer);
+            System.out.println(productAnswer2);
+
+            int positiveness = reviewService.getCountByAnswer(productName,productAnswer);
+            int negativeness = reviewService.getCountByAnswer(productName,productAnswer2);
+
+            Map<String, Integer> response = new HashMap<>();
+            response.put("positiveness", positiveness);
+            response.put("negativeness", negativeness);
+
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
             // Handle exceptions appropriately, e.g., log and return a 500 Internal Server Error
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 }
+

@@ -10,13 +10,17 @@ import pandas as pd
 import datetime as dt
 from dateutil.relativedelta import relativedelta
 from selenium.common.exceptions import NoSuchElementException
-#from package.insertDB import insertDB
+import base64
+#from insertDB import insertDB
 
-# csv파일에 담을 제품명,후기제목,후기내용,등록일자 리스트
-productlist = []
+# csv파일에 담을 제품명,후기제목,후기내용,등록일자,이미지 리스트
+productlist1 = [] # ttobakcare.csv
 titlelist = []
 contentlist = []
 datelist = []
+
+productlist2 = [] # ttobakcare_image.csv
+imagelist = [] 
 
 # 웹 드라이버 초기화 
 driver = webdriver.Chrome()
@@ -41,43 +45,52 @@ def reviewScrapping(before_date):
     print(empty.text)
     if(empty.text == "등록된 게시글이 없습니다."):
         empty_product_name = driver.find_element(By.CLASS_NAME, 'goods-name').text
-        productlist.append(empty_product_name)
+        productlist1.append(empty_product_name)
         titlelist.append(None)
         contentlist.append(None)
         datelist.append(None)
+        imagelist.append(None)
         return
 
+    product_name = driver.find_element(By.CLASS_NAME, 'goods-name').text
+
+    bs = BeautifulSoup(driver.page_source, 'html.parser')
+    image = bs.select_one("img[data-v-ae438176]")
+
+    print(product_name)
+
+    productlist2.append(product_name)
+    imagelist.append(image["src"])
+    
     loop = True
     while loop:
 
         bs = BeautifulSoup(driver.page_source, 'html.parser')
         review = bs.find(class_="board-list")
         reviews = review.find_all("li")
-            
+
+
         for i in range(1, len(reviews)-1):    
             date = dt.datetime.strptime(reviews[i].select_one('.board-list-date').text, "%Y-%m-%d").date()
+            print(date)
 
             if date < before_date:
                 loop = False
                 break
 
             try:
-                product_name = bs.find(class_='goods-name').text
-                print(product_name)
                 title = reviews[i].select_one('.board-list-title > span').get_text()
                 print(title)
                 content = reviews[i].select_one('.board-list-content > p').get_text().replace("\n", "")
                 print(content)
-                
-                print(date)
 
             except AttributeError as a :
                 continue
             
-            productlist.append(product_name)
+            productlist1.append(product_name)
             titlelist.append(title)
             contentlist.append(content) 
-            datelist.append(date) 
+            datelist.append(date)
 
         try: 
             paging_button = driver.find_element(By.CLASS_NAME, 'next')
@@ -132,9 +145,15 @@ def main():
 
 main()
 
-data = {"name":productlist, "title":titlelist, "content":contentlist, "date":datelist}
-df = pd.DataFrame(data)
-print(df.head(10))
+# 스크래핑한 데이터 -> 데이터프레임 -> csv파일 -> db table에 저장
+data1 = {"name":productlist1, "title":titlelist, "content":contentlist, "date":datelist}
+data2 = {"name":productlist2, "image":imagelist}
 
-df.to_csv("ttobakcare.csv", encoding = "utf-8-sig")
+df1 = pd.DataFrame(data1)
+df2 = pd.DataFrame(data2)
+print(df1.head(10))
+print(df2.head(10))
+
+df1.to_csv("ttobakcare.csv", encoding = "utf-8-sig")
+df2.to_csv("ttobakcare_image.csv", encoding = "utf-8-sig")
 #insertDB()

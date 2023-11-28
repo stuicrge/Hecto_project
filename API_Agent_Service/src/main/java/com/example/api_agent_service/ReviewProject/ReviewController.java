@@ -1,49 +1,39 @@
 package com.example.api_agent_service.ReviewProject;
 
-
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 @RestController
 public class ReviewController {
 
-    private final ReviewService reviewService;
-
     @Autowired
-    public ReviewController(ReviewService reviewService) {
-        this.reviewService = reviewService;
-    }
+    private ReviewService reviewService;  // ReviewService는 reviewMapper를 사용하는 서비스 클래스입니다.
 
-    @GetMapping("/findByAnswer")
-    public ResponseEntity<Map<String, Integer>> findByCountAnswer(@RequestParam("productAnswer") String productAnswer,
-                                                             @RequestParam("productAnswer2") String productAnswer2,
-                                                                  @RequestParam("productName") String productName) {
+    @GetMapping("/getCountByAnswer")
+    public Map<String, Object> getCountByAnswers(
+            @RequestParam("productName") String productName) {
+
+        Map<String, Object> response = new HashMap<>();
+
         try {
-            System.out.println(productName);
-            System.out.println(productAnswer);
-            System.out.println(productAnswer2);
+            // reviewService를 통해 getCountByAnswer 함수 호출
+            int PositiveAnswerCount = reviewService.getCount(productName, "긍정");
+            int NegativeAnswerCount = reviewService.getCount(productName,"부정");
 
-            int positiveness = reviewService.getCountByAnswer(productName,productAnswer);
-            int negativeness = reviewService.getCountByAnswer(productName,productAnswer2);
-
-            Map<String, Integer> response = new HashMap<>();
-            response.put("positiveness", positiveness);
-            response.put("negativeness", negativeness);
-
-            return ResponseEntity.ok(response);
+            // 결과를 JSON 응답에 추가
+            response.put("productName", productName);
+            response.put("PositiveAnswerCount", PositiveAnswerCount);
+            response.put("NegativeAnswerCount",NegativeAnswerCount);
         } catch (Exception e) {
-            // Handle exceptions appropriately, e.g., log and return a 500 Internal Server Error
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            // 에러가 발생하면 에러 메시지를 응답에 추가
+            response.put("error", e.getMessage());
         }
+        return response;
     }
 }
 

@@ -1,67 +1,106 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Container, Nav, Navbar, NavDropdown } from 'react-bootstrap';
+import { Container, Nav, Navbar, Button} from 'react-bootstrap';
+import { FormControl, InputGroup, Form } from 'react-bootstrap';
+import 'chart.js/auto';
+import {Bar, Doughnut} from "react-chartjs-2";
+const AnswerComponent = ({positiveAnswerCount, negativeAnswerCount }) => {
+    return (
+        <div>
+            {/*<h2>Review Information for {productName}</h2>*/}
+            <p>Positive Answer Count: {positiveAnswerCount}</p>
+            <p>Negative Answer Count: {negativeAnswerCount}</p>
+        </div>
+    );
+};
 
-export default function Answer() {
-    const [productAnswer, setAnswer] = useState('');
-    const [productAnswer2, setAnswer2] = useState('');
+const Answer = () => {
+    const [productName, setProductName] = useState('');
+    const [positiveAnswerCount, setPositiveAnswerCount] = useState(null);
+    const [negativeAnswerCount, setNegativeAnswerCount] = useState(null);
+    const [showAnswerComponent, setShowAnswerComponent] = useState(false);
 
-    useEffect(() => {
-        // Using an async function to fetch data
-        const fetchData = async () => {
-            try {
-                const encodedProductName = encodeURIComponent('[골프에디션] 오투부스터 (5포)');
-                const response = await axios.get('http://localhost:8080/findByAnswer', {
-                    params: { productName: encodedProductName, productAnswer: '긍정', productAnswer2: '부정' }
-                });
+    const getCountByAnswer = async () => {
+        try {
+            const encodedProductName = encodeURIComponent(productName);
+            const response = await fetch(`/getCountByAnswer?productName=${encodedProductName}`);
 
-                // Update state with fetched data
-                setAnswer(response.data.positiveness);
-                setAnswer2(response.data.negativeness);
-                console.log(response.data.positiveness);
-                console.log(response.data.negativeness);
-            } catch (error) {
-                console.log(error);
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
             }
-        };
 
-        // Call the async function
-        fetchData();
-    }, []); // Empty dependency array to run the effect only once, similar to componentDidMount
+            const data = await response.json();
+
+            // 결과 값을 상태에 업데이트
+            setPositiveAnswerCount(data.PositiveAnswerCount);
+            setNegativeAnswerCount(data.NegativeAnswerCount);
+            setShowAnswerComponent(true); // AnswerComponent를 보이도록 설정
+
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            setShowAnswerComponent(false); // 에러 발생 시 AnswerComponent를 숨기도록 설정
+        }
+    };
+
+    const chartData = {
+        labels: ['Positive', 'Negative'],
+        datasets: [
+            {
+                label: 'Answer Count',
+                data: [positiveAnswerCount, negativeAnswerCount],
+                backgroundColor: ['#4CAF50', '#FF5733'], // Green for positive, Red for negative
+            },
+        ],
+    };
 
     return (
         <div>
-            <Navbar expand="lg" bg="light">
-                <Container>
-                    <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
-                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                    <Navbar.Collapse id="basic-navbar-nav">
-                        <Nav className="me-auto">
-                            <Nav.Link href="#home">Home</Nav.Link>
-                            <Nav.Link href="#link">Link</Nav.Link>
-                            <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-                                <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                                <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
-                                <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-                                <NavDropdown.Divider />
-                                <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
-                            </NavDropdown>
-                        </Nav>
-                    </Navbar.Collapse>
-                </Container>
+            <Navbar bg="dark" data-bs-theme="dark">
+            <Container>
+            <Navbar.Brand href="#home">Navbar</Navbar.Brand>
+            <Nav className="me-auto">
+            <Nav.Link href="#home">Home</Nav.Link>0
+            <Nav.Link href="#features">Features</Nav.Link>
+            <Nav.Link href="#pricing">Pricing</Nav.Link>
+            </Nav>
+            </Container>
             </Navbar>
-            {/* Display fetched data */}
-            <div>
-                {/*<p>상품명 : </p>*/}
-                {/*<select>*/}
-                {/*    <option value={}>{}</option>*/}
-                {/*</select>*/}
-                긍정후기갯수: {productAnswer}
-            </div>
-            <div>
-                부정후기갯수: {productAnswer2}
-            </div>
+            <br />
+
+            <h1>Review Information</h1>
+            <Form>
+                <Form.Label></Form.Label>
+                <InputGroup className="mb-3">
+                    <FormControl
+                        type="text"
+                        placeholder="Search Product"
+                        value={productName}
+                        onChange={(e) => setProductName(e.target.value)}
+                    />
+                </InputGroup>
+            </Form>
+            <br />
+            <Button onClick={getCountByAnswer}>Get Answer Count</Button>
+
+            {showAnswerComponent && (
+
+                <div>
+                <AnswerComponent
+                    productName={productName}
+                    positiveAnswerCount={positiveAnswerCount}
+                    negativeAnswerCount={negativeAnswerCount}
+                />
+                    <Bar data={chartData} />
+                    <Doughnut data={chartData} />
+
+                </div>
+            )}
+
+
         </div>
     );
-}
+};
+export default Answer;
+
+
+

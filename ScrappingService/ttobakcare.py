@@ -35,6 +35,7 @@ def reviewScrapping(before_date):
     action.send_keys(Keys.END)
     time.sleep(2)
    
+    #리뷰버튼 클릭
     wait = WebDriverWait(driver, 10)  # 최대 10초 기다림
     review_button = wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="traceLogTarget"]/div[2]/div/div/button[2]')))
     review_button.click()
@@ -62,6 +63,7 @@ def reviewScrapping(before_date):
     productlist2.append(product_name)
     imagelist.append(image["src"])
     
+    #리뷰가 있을때
     loop = True
     while loop:
 
@@ -70,10 +72,13 @@ def reviewScrapping(before_date):
         reviews = review.find_all("li")
 
 
+    
+    # 리뷰들의 date값
         for i in range(1, len(reviews)-1):    
             date = dt.datetime.strptime(reviews[i].select_one('.board-list-date').text, "%Y-%m-%d").date()
             print(date)
 
+    #
             if date < before_date:
                 loop = False
                 break
@@ -83,6 +88,8 @@ def reviewScrapping(before_date):
                 print(title)
                 content = reviews[i].select_one('.board-list-content > p').get_text().replace("\n", "")
                 print(content)
+                print(content)              
+                print(date)
 
             except AttributeError as a :
                 continue
@@ -103,6 +110,9 @@ def reviewScrapping(before_date):
             # if paging_button.is_displayed()==False:
             time.sleep(2)
             return
+    
+
+
             
 def main():
 
@@ -136,7 +146,7 @@ def main():
             reviewScrapping(before_one_year)
         finally:
             print("end")
-    
+
         time.sleep(3)
         driver.back()         
         time.sleep(3) 

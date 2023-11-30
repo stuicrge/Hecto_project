@@ -9,8 +9,7 @@ from selenium.webdriver.support import expected_conditions as EC
 import pandas as pd 
 import datetime as dt
 from dateutil.relativedelta import relativedelta
-from selenium.common.exceptions import NoSuchElementException
-from insertDB import insertDB
+from selenium.common.exceptions import NoSuchElementException  
 
 # csv파일에 담을 제품명,후기제목,후기내용,등록일자,이미지 리스트
 productlist1 = [] # ttobakcare.csv
@@ -165,4 +164,3 @@ print(df2.head(10))
 
 df1.to_csv("ttobakcare.csv", encoding = "utf-8-sig")
 df2.to_csv("ttobakcare_image.csv", encoding = "utf-8-sig")
-insertDB()

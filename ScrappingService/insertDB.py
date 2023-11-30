@@ -1,7 +1,7 @@
 import csv
 from package.dbconn import mysqlDbConnection, mysqlDbClose
 
-dbConn = mysqlDbConnection('root', '0000', '127.0.0.1', 3306, 'reviewdb') 
+dbConn = mysqlDbConnection('newuser', '1234', '210.110.33.220:3306', 3306, 'reviewdb') 
 cursor = dbConn.cursor()
  
  

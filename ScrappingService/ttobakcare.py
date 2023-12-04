@@ -51,15 +51,15 @@ def reviewScrapping(before_date):
         imagelist.append(None)
         return
 
-    product_name = driver.find_element(By.CLASS_NAME, 'goods-name').text
+    #product_name = driver.find_element(By.CLASS_NAME, 'goods-name').text
 
-    bs = BeautifulSoup(driver.page_source, 'html.parser')
-    image = bs.select_one("img[data-v-ae438176]")
+    #bs = BeautifulSoup(driver.page_source, 'html.parser')
+    #image = bs.select_one("img[data-v-ae438176]")
 
-    print(product_name)
+    #print(product_name)
 
-    productlist2.append(product_name)
-    imagelist.append(image["src"])
+    #productlist2.append(product_name)
+    #imagelist.append(image["src"])
     
     #리뷰가 있을때
     loop = True
@@ -74,19 +74,19 @@ def reviewScrapping(before_date):
     # 리뷰들의 date값
         for i in range(1, len(reviews)-1):    
             date = dt.datetime.strptime(reviews[i].select_one('.board-list-date').text, "%Y-%m-%d").date()
-            print(date)
-
+            
     #
             if date < before_date:
                 loop = False
                 break
 
             try:
+                product_name = driver.find_element(By.CLASS_NAME, 'goods-name').text
+                print(product_name)
                 title = reviews[i].select_one('.board-list-title > span').get_text()
                 print(title)
                 content = reviews[i].select_one('.board-list-content > p').get_text().replace("\n", "")
-                print(content)
-                print(content)              
+                print(content)            
                 print(date)
 
             except AttributeError as a :
@@ -109,9 +109,7 @@ def reviewScrapping(before_date):
             time.sleep(2)
             return
     
-
-
-            
+ 
 def main():
 
     # 상품 목록 스크랩 (전체 제품 스크랩)
@@ -155,12 +153,12 @@ main()
 
 # 스크래핑한 데이터 -> 데이터프레임 -> csv파일 -> db table에 저장
 data1 = {"name":productlist1, "title":titlelist, "content":contentlist, "date":datelist}
-data2 = {"name":productlist2, "image":imagelist}
+#data2 = {"name":productlist2, "image":imagelist}
 
 df1 = pd.DataFrame(data1)
-df2 = pd.DataFrame(data2)
+#df2 = pd.DataFrame(data2)
 print(df1.head(10))
-print(df2.head(10))
+#print(df2.head(10))
 
-df1.to_csv("ttobakcare.csv", encoding = "utf-8-sig")
-df2.to_csv("ttobakcare_image.csv", encoding = "utf-8-sig")
+df1.to_csv("ttobakcare3.csv", encoding = "utf-8-sig")
+#df2.to_csv("ttobakcare_image.csv", encoding = "utf-8-sig")

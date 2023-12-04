@@ -4,20 +4,29 @@ import { Container, Nav, Navbar, Button} from 'react-bootstrap';
 import { FormControl, InputGroup, Form } from 'react-bootstrap';
 import 'chart.js/auto';
 import {Bar, Doughnut} from "react-chartjs-2";
-const AnswerComponent = ({positiveAnswerCount, negativeAnswerCount }) => {
+import './Answer.css';
+
+
+const AnswerComponent = ({mostposAnswerCount, positiveAnswerCount, normalAnswerCount,negativeAnswerCount,mostnegAnswerCount }) => {
     return (
         <div>
             {/*<h2>Review Information for {productName}</h2>*/}
+            <p>Most Positive Answer Count: {mostposAnswerCount}</p>
             <p>Positive Answer Count: {positiveAnswerCount}</p>
+            <p>Normal Answer Count: {normalAnswerCount}</p>
             <p>Negative Answer Count: {negativeAnswerCount}</p>
+            <p>Most Negative Answer Count: {mostnegAnswerCount}</p>
         </div>
     );
 };
 
 const Answer = () => {
     const [productName, setProductName] = useState('');
+    const [mostposAnswerCount, setMostPositiveAnswerCount] = useState(null);
     const [positiveAnswerCount, setPositiveAnswerCount] = useState(null);
+    const [normalAnswerCount, setNormalAnswerCount] = useState(null);
     const [negativeAnswerCount, setNegativeAnswerCount] = useState(null);
+    const [mostnegAnswerCount, setMostNegativeAnswerCount] = useState(null);
     const [showAnswerComponent, setShowAnswerComponent] = useState(false);
 
     const getCountByAnswer = async () => {
@@ -32,8 +41,11 @@ const Answer = () => {
             const data = await response.json();
 
             // 결과 값을 상태에 업데이트
+            setMostPositiveAnswerCount(data.MostPositiveAnswerCount);
             setPositiveAnswerCount(data.PositiveAnswerCount);
+            setNormalAnswerCount(data.NormalAnswerCount);
             setNegativeAnswerCount(data.NegativeAnswerCount);
+            setMostNegativeAnswerCount(data.MostNegativeAnswerCount);
             setShowAnswerComponent(true); // AnswerComponent를 보이도록 설정
 
         } catch (error) {
@@ -43,12 +55,12 @@ const Answer = () => {
     };
 
     const chartData = {
-        labels: ['Positive', 'Negative'],
+        labels: ['Most Positive','Positive', 'Normal','Negative','Most Negative'],
         datasets: [
             {
                 label: 'Answer Count',
-                data: [positiveAnswerCount, negativeAnswerCount],
-                backgroundColor: ['#4CAF50', '#FF5733'], // Green for positive, Red for negative
+                data: [mostposAnswerCount, positiveAnswerCount, normalAnswerCount,  negativeAnswerCount, mostnegAnswerCount],
+                backgroundColor: ['#36A2EB', '#FF6384', '#4CAF50', '#FF5733', '#8A2BE2'], // Green for positive, Red for negative
             },
         ],
     };
@@ -85,13 +97,25 @@ const Answer = () => {
             {showAnswerComponent && (
 
                 <div>
-                <AnswerComponent
-                    productName={productName}
-                    positiveAnswerCount={positiveAnswerCount}
-                    negativeAnswerCount={negativeAnswerCount}
-                />
-                    <Bar data={chartData} />
-                    <Doughnut data={chartData} />
+                    <div className="Answercontainer">
+                        <AnswerComponent
+                            productName={productName}
+                            mostposAnswerCount={mostposAnswerCount}
+                            positiveAnswerCount={positiveAnswerCount}
+                            normalAnswerCount={normalAnswerCount}
+                            negativeAnswerCount={negativeAnswerCount}
+                            mostnegAnswerCount={mostnegAnswerCount}
+                        />
+                    </div>
+
+                    <div className="chartcontainer">
+                    <div className="Barchartcontainer">
+                        <Bar data={chartData} />
+                    </div>
+                    <div className="Doughnutchartcontainer">
+                        <Doughnut data={chartData} />
+                    </div>
+                    </div>
 
                 </div>
             )}

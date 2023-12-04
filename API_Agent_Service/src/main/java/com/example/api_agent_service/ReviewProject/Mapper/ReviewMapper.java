@@ -1,4 +1,4 @@
-package com.example.api_agent_service.ReviewProject;
+package com.example.api_agent_service.ReviewProject.Mapper;
 
 
 import com.example.api_agent_service.ReviewProject.Review;
@@ -27,7 +27,7 @@ public interface ReviewMapper {
 //    @Select("SELECT answer FROM TEST_TTOBAK_REVIEW WHERE productName = #{productName}")
 //    String findByAnswers(@Param("productName") String productName);
 
-    @Select("SELECT COUNT(answer) FROM TEST_TTOBAK_REVIEW WHERE productName = #{productName} AND answer = #{answer}")
+    @Select("SELECT COUNT(answer) FROM TESTREVIEW WHERE productName = #{productName} AND answer = #{answer}")
     int selectAnswerCount(@Param("productName") String productName, @Param("answer") String answer);
 
 }

@@ -1,4 +1,5 @@
-package com.example.api_agent_service.ReviewProject;
+package com.example.api_agent_service.ReviewProject.Service;
+import com.example.api_agent_service.ReviewProject.Mapper.ReviewMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

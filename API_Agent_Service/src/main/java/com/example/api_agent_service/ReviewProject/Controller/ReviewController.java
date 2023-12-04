@@ -1,5 +1,6 @@
-package com.example.api_agent_service.ReviewProject;
+package com.example.api_agent_service.ReviewProject.Controller;
 
+import com.example.api_agent_service.ReviewProject.Service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,13 +23,19 @@ public class ReviewController {
 
         try {
             // reviewService를 통해 getCountByAnswer 함수 호출
-            int PositiveAnswerCount = reviewService.getCount(productName, "긍정");
-            int NegativeAnswerCount = reviewService.getCount(productName,"부정");
+            int MostPositiveAnswerCount = reviewService.getCount(productName, "매우좋음");
+            int PositiveAnswerCount = reviewService.getCount(productName, "좋음");
+            int NormalAnswerCount = reviewService.getCount(productName,"보통");
+            int NegativeAnswerCount = reviewService.getCount(productName,"나쁨");
+            int MostNegativeAnswerCount = reviewService.getCount(productName,"매우나쁨");
 
             // 결과를 JSON 응답에 추가
             response.put("productName", productName);
+            response.put("MostPositiveAnswerCount",MostPositiveAnswerCount);
             response.put("PositiveAnswerCount", PositiveAnswerCount);
+            response.put("NormalAnswerCount",NormalAnswerCount);
             response.put("NegativeAnswerCount",NegativeAnswerCount);
+            response.put("MostNegativeAnswerCount",MostNegativeAnswerCount);
         } catch (Exception e) {
             // 에러가 발생하면 에러 메시지를 응답에 추가
             response.put("error", e.getMessage());

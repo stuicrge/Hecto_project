@@ -1,0 +1,20 @@
+/* 전체 컨테이너에 flex 속성 추가 */
+.chartcontainer {
+    display: flex;
+    bottom:450px;
+}
+
+.Barchartcontainer {
+    width: 50%;
+    margin-right: 10px; /* 간격을 조절할 수 있습니다. */
+}
+
+.Doughnutchartcontainer {
+    width: 50%;
+}
+
+.Answercontainer{
+    position: absolute;
+    bottom: 450px;
+    right: 40px;
+}

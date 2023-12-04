@@ -27,7 +27,12 @@ public interface ReviewMapper {
 //    @Select("SELECT answer FROM TEST_TTOBAK_REVIEW WHERE productName = #{productName}")
 //    String findByAnswers(@Param("productName") String productName);
 
+    //또박케어 디비 sql문
     @Select("SELECT COUNT(answer) FROM TESTREVIEW WHERE productName = #{productName} AND answer = #{answer}")
     int selectAnswerCount(@Param("productName") String productName, @Param("answer") String answer);
+
+    //락토핏 디비 sql문
+    @Select ("SELECT COUNT(gpt_answer) FROM LACTOFIT_REVIEW WHERE name = #{name} AND gpt_answer = #{gpt_answer}")
+    int comepareAnswerCount(@Param("name") String name, @Param("gpt_answer") String gpt_answer);
 
 }

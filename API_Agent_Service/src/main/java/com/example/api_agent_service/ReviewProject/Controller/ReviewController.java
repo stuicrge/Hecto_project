@@ -42,5 +42,54 @@ public class ReviewController {
         }
         return response;
     }
+
+
+    @GetMapping("/CompareReviews")
+    public Map<String, Object> getCompareAnswers(@RequestParam("productName") String productName,
+                                                 @RequestParam("name") String name){
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+
+            // reviewService를 통해 getCount 함수 호출
+            int MostPositiveAnswerCount = reviewService.getCount(productName, "매우좋음");
+            int PositiveAnswerCount = reviewService.getCount(productName, "좋음");
+            int NormalAnswerCount = reviewService.getCount(productName,"보통");
+            int NegativeAnswerCount = reviewService.getCount(productName,"나쁨");
+            int MostNegativeAnswerCount = reviewService.getCount(productName,"매우나쁨");
+
+            // reviewService를 통해 getCompareCount 함수 호출
+            int MostPositiveCompareCount = reviewService.getCompareCount(name,"매우좋음");
+            int PositiveCompareCount = reviewService.getCompareCount(name,"좋음");
+            int NormalCompareCount  = reviewService.getCompareCount(name,"보통");
+            int NegativeCompareCount = reviewService.getCompareCount(name,"나쁨");
+            int MostNegativeCompareCount = reviewService.getCompareCount(name,"매우나쁨");
+
+
+            //
+            response.put("productName", productName);
+            response.put("MostPositiveAnswerCount",MostPositiveAnswerCount);
+            response.put("PositiveAnswerCount", PositiveAnswerCount);
+            response.put("NormalAnswerCount",NormalAnswerCount);
+            response.put("NegativeAnswerCount",NegativeAnswerCount);
+            response.put("MostNegativeAnswerCount",MostNegativeAnswerCount);
+
+            // 락토핏 데이터
+            response.put("name", name);
+            response.put("MostPositiveCompareCount",MostPositiveCompareCount);
+            response.put("PositiveCompareCount", PositiveCompareCount);
+            response.put("NormalCompareCount",NormalCompareCount);
+            response.put("NegativeCompareCount",NegativeCompareCount);
+            response.put("MostNegativeCompareCount",MostNegativeCompareCount);
+
+
+        } catch (Exception e) {
+            // 에러가 발생하면 에러 메시지를 응답에 추가
+            response.put("error", e.getMessage());
+        }
+
+        return response;
+    }
+
 }
 

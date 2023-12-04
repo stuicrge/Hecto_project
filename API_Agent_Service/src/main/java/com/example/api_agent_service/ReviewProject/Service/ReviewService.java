@@ -13,8 +13,12 @@ public class ReviewService {
         this.reviewMapper = reviewMapper;
     }
 
-    // 다른 서비스 메소드들...
+    // 또박케어 감정 질의의 개수를 출력
     public int getCount( String productName , String productAnswer) {
         return reviewMapper.selectAnswerCount(productName, productAnswer);
+    }
+    // 락토핏의 감정 질의의 개수를 출력
+    public int getCompareCount(String name, String gpt_answer){
+        return reviewMapper.comepareAnswerCount(name,gpt_answer);
     }
 }

@@ -11,11 +11,11 @@ const AnswerComponent = ({mostposAnswerCount, positiveAnswerCount, normalAnswerC
     return (
         <div>
             {/*<h2>Review Information for {productName}</h2>*/}
-            <p>Most Positive Answer Count: {mostposAnswerCount}</p>
-            <p>Positive Answer Count: {positiveAnswerCount}</p>
-            <p>Normal Answer Count: {normalAnswerCount}</p>
-            <p>Negative Answer Count: {negativeAnswerCount}</p>
-            <p>Most Negative Answer Count: {mostnegAnswerCount}</p>
+            <p>매우 좋음: {mostposAnswerCount}</p>
+            <p>좋음: {positiveAnswerCount}</p>
+            <p>보통: {normalAnswerCount}</p>
+            <p>나쁨: {negativeAnswerCount}</p>
+            <p>매우 나쁨: {mostnegAnswerCount}</p>
         </div>
     );
 };
@@ -55,7 +55,7 @@ const Answer = () => {
     };
 
     const chartData = {
-        labels: ['Most Positive','Positive', 'Normal','Negative','Most Negative'],
+        labels: ['매우 좋음','좋음', '보통','나쁨','매우 나쁨'],
         datasets: [
             {
                 label: 'Answer Count',
@@ -69,18 +69,17 @@ const Answer = () => {
         <div>
             <Navbar bg="dark" data-bs-theme="dark">
             <Container>
-            <Navbar.Brand href="#home">Navbar</Navbar.Brand>
+            <Navbar.Brand href="#home">Home</Navbar.Brand>
             <Nav className="me-auto">
-            <Nav.Link href="#home">Home</Nav.Link>0
-            <Nav.Link href="#features">Features</Nav.Link>
-            <Nav.Link href="#pricing">Pricing</Nav.Link>
+            <Nav.Link href="#home">또박케어 상품 후기 선호도</Nav.Link>0
+            <Nav.Link href="#features">타사 제품과 비교</Nav.Link>
             </Nav>
             </Container>
             </Navbar>
             <br />
 
             <h1>Review Information</h1>
-            <Form>
+            <Form >
                 <Form.Label></Form.Label>
                 <InputGroup className="mb-3">
                     <FormControl
@@ -88,6 +87,7 @@ const Answer = () => {
                         placeholder="Search Product"
                         value={productName}
                         onChange={(e) => setProductName(e.target.value)}
+                        className = "small-placeholder"
                     />
                 </InputGroup>
             </Form>
@@ -96,7 +96,7 @@ const Answer = () => {
 
             {showAnswerComponent && (
 
-                <div>
+                <div className="c_container">
                     <div className="Answercontainer">
                         <AnswerComponent
                             productName={productName}
@@ -116,11 +116,8 @@ const Answer = () => {
                         <Doughnut data={chartData} />
                     </div>
                     </div>
-
                 </div>
             )}
-
-
         </div>
     );
 };

@@ -1,20 +1,28 @@
-/* 전체 컨테이너에 flex 속성 추가 */
-.chartcontainer {
+.c_container {
     display: flex;
-    bottom:450px;
+    flex-direction: column; /* 수직으로 배치 */
 }
 
-.Barchartcontainer {
-    width: 50%;
-    margin-right: 10px; /* 간격을 조절할 수 있습니다. */
+.small-placeholder::placeholder {
+    font-size: 12px; /* 원하는 크기로 조절하세요 */
+    /* 다른 스타일 속성도 추가할 수 있습니다. */
 }
 
+.Answercontainer {
+    /* 기존 스타일 속성들 유지 */
+    margin-left:70%;
+}
+
+.chartcontainer {
+    /* 기존 스타일 속성들 유지 */
+    display: flex;
+    flex-direction: row; /* 수평으로 배치 */
+    justify-content: space-evenly; /* 자식 요소 사이의 간격을 최대화 */
+    margin-top: 40px; /* 위쪽으로 여백을 추가하여 내립니다. */
+}
+
+.Barchartcontainer,
 .Doughnutchartcontainer {
-    width: 50%;
+    width: 30%
 }
 
-.Answercontainer{
-    position: absolute;
-    bottom: 450px;
-    right: 40px;
-}

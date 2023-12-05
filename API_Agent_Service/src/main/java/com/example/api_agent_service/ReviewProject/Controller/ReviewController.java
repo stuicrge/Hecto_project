@@ -46,7 +46,7 @@ public class ReviewController {
 
     @GetMapping("/CompareReviews")
     public Map<String, Object> getCompareAnswers(@RequestParam("productName") String productName,
-                                                 @RequestParam("name") String name){
+                                                    @RequestParam("name") String name){
         Map<String, Object> response = new HashMap<>();
 
         try {
@@ -57,6 +57,7 @@ public class ReviewController {
             int NormalAnswerCount = reviewService.getCount(productName,"보통");
             int NegativeAnswerCount = reviewService.getCount(productName,"나쁨");
             int MostNegativeAnswerCount = reviewService.getCount(productName,"매우나쁨");
+
 
             // reviewService를 통해 getCompareCount 함수 호출
             int MostPositiveCompareCount = reviewService.getCompareCount(name,"매우좋음");

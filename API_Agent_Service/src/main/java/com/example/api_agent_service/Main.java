@@ -22,6 +22,11 @@ public class Main implements CommandLineRunner {
     public void run(String... args) throws Exception {
 
         System.out.println(this.reviewMapper.selectAnswerCount("오투부스터","매우좋음"));
+
+
+
+
+
     }
 
 

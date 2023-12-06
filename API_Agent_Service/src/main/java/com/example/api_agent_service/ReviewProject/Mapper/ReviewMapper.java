@@ -14,8 +14,8 @@ import java.util.Map;
 public interface ReviewMapper {
 
     //또박케어 디비 sql문
-    @Select("SELECT COUNT(answer) FROM TESTREVIEW WHERE productName = #{productName} AND answer = #{answer}")
-    int selectAnswerCount(@Param("productName") String productName, @Param("answer") String answer);
+    @Select("SELECT COUNT(gpt_answer) FROM TTOBAK_REVIEW WHERE productName = #{productName} AND gpt_answer = #{gpt_answer}")
+    int selectAnswerCount(@Param("productName") String productName, @Param("gpt_answer") String gpt_answer);
 
     //락토핏 디비 sql문
     @Select ("SELECT COUNT(gpt_answer) FROM LACTOFIT_REVIEW WHERE name = #{name} AND gpt_answer = #{gpt_answer}")

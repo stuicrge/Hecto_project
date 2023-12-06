@@ -21,7 +21,7 @@ public class Main implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        System.out.println(this.reviewMapper.selectAnswerCount("오투부스터","매우좋음"));
+        System.out.println(this.reviewMapper.selectAnswerCount("[6개월 매월또박] 드시모네 베이비 스텝1 ","매우좋음"));
 
 
 

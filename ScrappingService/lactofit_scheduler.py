@@ -11,15 +11,15 @@ import pandas as pd
 import datetime as dt
 from dateutil.relativedelta import relativedelta
 from apscheduler.schedulers.blocking import BlockingScheduler
-from insertDB import insertDB
+from insertDB_lactofit import insertDB_lactofit
 
 import sys
 sys.path.append(r'C:\ReviewService\GptApiService')
 
 from gpt_lactofit import gpt_lactofit
-from updateDB import updateDB_lactofit
+from updateDB_lactofit import updateDB_lactofit
 
-# 타사 제품 크롤링 서비스
+# 타사 제품 스크래핑 서비스
 def reviewScrapping():
     productlist = []
     contentlist = []
@@ -111,7 +111,7 @@ def reviewScrapping():
                     break
 
                 try:
-                    content = content_element.get_text()
+                    content = content_element.get_text(strip=True)
                     print(content)
                     product_name = product_element.text
                     print(product_name)      
@@ -126,7 +126,7 @@ def reviewScrapping():
                 datelist.append(date)
             if not loop:
                 break  # Break the outer loop when the inner loop breaks
-                                
+    driver.quit()                           
     print("finish")
 
     data = {"name":productlist,"content":contentlist,"date":datelist}
@@ -137,17 +137,17 @@ def reviewScrapping():
         
         df.to_csv("lactofit.csv", encoding="utf-8-sig")
         
-        #csv_len = len(df)
-        #insertDB()
-        #gpt_lactofit(csv_len)
-        #updateDB_lactofit(csv_len)
+        csv_len = len(df)
+        insertDB_lactofit()
+        gpt_lactofit(csv_len)
+        updateDB_lactofit()
     else:
         print("DataFrame is empty. No data to save.")
 
 # 스케줄러
 sched = BlockingScheduler(timezone='Asia/Seoul')
 
-sched.add_job(reviewScrapping, 'cron', hour='10',minute='45')  
+sched.add_job(reviewScrapping, 'cron', hour='12',minute='0')  
 
 print('sched before~')
 try:

@@ -10,7 +10,8 @@ from selenium.webdriver.support import expected_conditions as EC
 import pandas as pd 
 import datetime as dt
 from dateutil.relativedelta import relativedelta
-# 타사 제품 크롤링 서비스
+
+# 타사 제품 스크래핑 서비스
 
 productlist = []
 contentlist = []
@@ -104,7 +105,7 @@ while loop:
                 break
 
             try:
-                content = content_element.get_text()
+                content = content_element.get_text(strip=True)
                 print(content)
                 product_name = product_element.text
                 print(product_name)      
@@ -119,10 +120,10 @@ while loop:
             datelist.append(date)
         if not loop:
             break  # Break the outer loop when the inner loop breaks
-                            
+driver.quit()                           
 print("finish")
 
 data = {"name":productlist,"content":contentlist,"date":datelist}
 df = pd.DataFrame(data)
 print(df.head(100))
-df.to_csv("lactofit2.csv", encoding = "utf-8-sig")
+df.to_csv("lactofit.csv", encoding = "utf-8-sig")

@@ -5,6 +5,7 @@ import { FormControl, InputGroup, Form } from 'react-bootstrap';
 import 'chart.js/auto';
 import {Bar, Doughnut} from "react-chartjs-2";
 import './Answer.css';
+import {Link} from "react-router-dom";
 
 
 const AnswerComponent = ({mostposAnswerCount, positiveAnswerCount, normalAnswerCount,negativeAnswerCount,mostnegAnswerCount }) => {
@@ -30,6 +31,7 @@ const Answer = () => {
     const [showAnswerComponent, setShowAnswerComponent] = useState(false);
 
     const getCountByAnswer = async () => {
+
         try {
             const encodedProductName = encodeURIComponent(productName);
             const response = await fetch(`/getCountByAnswer?productName=${encodedProductName}`);
@@ -68,13 +70,13 @@ const Answer = () => {
     return (
         <div>
             <Navbar bg="dark" data-bs-theme="dark">
-            <Container>
-            <Navbar.Brand href="#home">Home</Navbar.Brand>
-            <Nav className="me-auto">
-            <Nav.Link href="#home">또박케어 상품 후기 선호도</Nav.Link>0
-            <Nav.Link href="#features">타사 제품과 비교</Nav.Link>
-            </Nav>
-            </Container>
+                <Container>
+                    <Navbar.Brand as={Link} to="/">Home</Navbar.Brand>
+                    <Nav className="me-auto">
+                        <Nav.Link as={Link} to="/getCountByAnswer">또박케어 상품 후기 선호도</Nav.Link>
+                        <Nav.Link as={Link} to="/CompareReviews">타사 제품과 비교</Nav.Link>
+                    </Nav>
+                </Container>
             </Navbar>
             <br />
 

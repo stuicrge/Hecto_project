@@ -19,6 +19,6 @@ public class ReviewService {
     }
     // 락토핏의 감정 질의의 개수를 출력
     public int getCompareCount(String name, String gpt_answer){
-        return reviewMapper.comepareAnswerCount(name,gpt_answer);
+        return reviewMapper.compareAnswerCount(name,gpt_answer);
     }
 }

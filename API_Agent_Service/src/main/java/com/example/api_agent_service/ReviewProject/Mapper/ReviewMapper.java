@@ -21,4 +21,5 @@ public interface ReviewMapper {
     @Select ("SELECT COUNT(gpt_answer) FROM LACTOFIT_REVIEW WHERE name = #{name} AND gpt_answer = #{gpt_answer}")
     int compareAnswerCount(@Param("name") String name, @Param("gpt_answer") String gpt_answer);
 
+
 }

@@ -112,7 +112,7 @@ const Compare = () => {
 
             <h1>Review Information</h1>
             <Form >
-                <Form.Label></Form.Label>
+                <Form.Select></Form.Select>
                 <InputGroup className="mb-3">
                     <FormControl
                         type="text"

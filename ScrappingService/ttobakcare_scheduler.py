@@ -11,8 +11,13 @@ import pandas as pd
 import datetime as dt
 from dateutil.relativedelta import relativedelta
 from apscheduler.schedulers.blocking import BlockingScheduler
-from package.insertDB import insertDB
+from insertDB import insertDB
 
+import sys
+sys.path.append(r'C:\ReviewService\GptApiService')
+
+from gpt import gpt
+from updateDB import updateDB
 
 # csv파일에 담을 제품명,후기제목,후기내용,등록일자 리스트
 productlist = []
@@ -23,7 +28,7 @@ datelist = []
 # 웹 드라이버 초기화 
 driver = webdriver.Chrome()
 driver.get("https://web.ttobakcare.com/goods/catalog?code=0001&btn_no=001")
-driver.maximize_window()
+#driver.maximize_window()
 
 #스크래핑 서비스
 def reviewScrapping(before_date):
@@ -43,6 +48,9 @@ def reviewScrapping(before_date):
     if(empty.text == "등록된 게시글이 없습니다."):
         return
 
+    product_name = driver.find_element(By.CLASS_NAME, 'goods-name').text
+    print(product_name)
+    
     loop = True
     while loop:
 
@@ -60,11 +68,9 @@ def reviewScrapping(before_date):
                 break
 
             try:
-                product_name = bs.find(class_='goods-name').text
-                print(product_name)
                 title = reviews[i].select_one('.board-list-title > span').get_text()
                 print(title)
-                content = reviews[i].select_one('.board-list-content > p').get_text().replace("\n", "")
+                content = reviews[i].select_one('.board-list-content > p').get_text(strip=True)
                 print(content)
                 
                 print(date)
@@ -130,16 +136,25 @@ def main():
 
     # 스크래핑한 데이터 -> 데이터프레임 -> csv파일 -> db table에 저장
     data = {"name":productlist, "title":titlelist, "content":contentlist, "date":datelist}
-    df = pd.DataFrame(data) # 데이터 프레임
-    print(df.head(10))
 
-    df.to_csv("ttobakcare.csv", encoding = "utf-8-sig") #csv파일
-    insertDB() # DB table에 저장
+    df = pd.DataFrame(data)
+
+    if not df.empty:
+        print(df.head(10))
+        
+        df.to_csv("ttobakcare.csv", encoding="utf-8-sig")
+        
+        csv_len = len(df)
+        insertDB()
+        gpt(csv_len)
+        updateDB(csv_len)
+    else:
+        print("DataFrame is empty. No data to save.")
 
 # 스케줄러
 sched = BlockingScheduler(timezone='Asia/Seoul')
 
-sched.add_job(main, 'cron', hour='16',minute='6')  
+sched.add_job(main, 'cron', hour='12',minute='0')  
 
 print('sched before~')
 try:

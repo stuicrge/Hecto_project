@@ -9,7 +9,9 @@ from selenium.webdriver.support import expected_conditions as EC
 import pandas as pd 
 import datetime as dt
 from dateutil.relativedelta import relativedelta
-from selenium.common.exceptions import NoSuchElementException  
+from selenium.common.exceptions import NoSuchElementException
+import base64
+#from insertDB import insertDB
 
 # csv파일에 담을 제품명,후기제목,후기내용,등록일자,이미지 리스트
 productlist1 = [] # ttobakcare.csv
@@ -33,7 +35,6 @@ def reviewScrapping(before_date):
     action.send_keys(Keys.END)
     time.sleep(2)
    
-    #리뷰버튼 클릭
     wait = WebDriverWait(driver, 10)  # 최대 10초 기다림
     review_button = wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="traceLogTarget"]/div[2]/div/div/button[2]')))
     review_button.click()
@@ -51,17 +52,16 @@ def reviewScrapping(before_date):
         imagelist.append(None)
         return
 
-    #product_name = driver.find_element(By.CLASS_NAME, 'goods-name').text
+    product_name = driver.find_element(By.CLASS_NAME, 'goods-name').text
 
-    #bs = BeautifulSoup(driver.page_source, 'html.parser')
-    #image = bs.select_one("img[data-v-ae438176]")
+    bs = BeautifulSoup(driver.page_source, 'html.parser')
+    image = bs.select_one("img[data-v-ae438176]")
 
-    #print(product_name)
+    print(product_name)
 
-    #productlist2.append(product_name)
-    #imagelist.append(image["src"])
+    productlist2.append(product_name)
+    imagelist.append(image["src"])
     
-    #리뷰가 있을때
     loop = True
     while loop:
 
@@ -70,24 +70,19 @@ def reviewScrapping(before_date):
         reviews = review.find_all("li")
 
 
-    
-    # 리뷰들의 date값
         for i in range(1, len(reviews)-1):    
             date = dt.datetime.strptime(reviews[i].select_one('.board-list-date').text, "%Y-%m-%d").date()
-            
-    #
+            print(date)
+
             if date < before_date:
                 loop = False
                 break
 
             try:
-                product_name = driver.find_element(By.CLASS_NAME, 'goods-name').text
-                print(product_name)
                 title = reviews[i].select_one('.board-list-title > span').get_text()
                 print(title)
-                content = reviews[i].select_one('.board-list-content > p').get_text().replace("\n", "")
-                print(content)            
-                print(date)
+                content = reviews[i].select_one('.board-list-content > p').get_text(strip=True)
+                print(content)
 
             except AttributeError as a :
                 continue
@@ -108,8 +103,7 @@ def reviewScrapping(before_date):
             # if paging_button.is_displayed()==False:
             time.sleep(2)
             return
-    
- 
+            
 def main():
 
     # 상품 목록 스크랩 (전체 제품 스크랩)
@@ -142,7 +136,7 @@ def main():
             reviewScrapping(before_one_year)
         finally:
             print("end")
-
+    
         time.sleep(3)
         driver.back()         
         time.sleep(3) 
@@ -153,12 +147,13 @@ main()
 
 # 스크래핑한 데이터 -> 데이터프레임 -> csv파일 -> db table에 저장
 data1 = {"name":productlist1, "title":titlelist, "content":contentlist, "date":datelist}
-#data2 = {"name":productlist2, "image":imagelist}
+data2 = {"name":productlist2, "image":imagelist}
 
 df1 = pd.DataFrame(data1)
-#df2 = pd.DataFrame(data2)
+df2 = pd.DataFrame(data2)
 print(df1.head(10))
-#print(df2.head(10))
+print(df2.head(10))
 
-df1.to_csv("ttobakcare3.csv", encoding = "utf-8-sig")
-#df2.to_csv("ttobakcare_image.csv", encoding = "utf-8-sig")
+df1.to_csv("ttobakcare.csv", encoding = "utf-8-sig")
+df2.to_csv("ttobakcare_image.csv", encoding = "utf-8-sig")
+#insertDB()

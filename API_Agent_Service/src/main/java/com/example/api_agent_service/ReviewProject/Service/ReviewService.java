@@ -3,6 +3,8 @@ import com.example.api_agent_service.ReviewProject.Mapper.ReviewMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ReviewService {
 
@@ -20,5 +22,17 @@ public class ReviewService {
     // 락토핏의 감정 질의의 개수를 출력
     public int getCompareCount(String name, String gpt_answer){
         return reviewMapper.compareAnswerCount(name,gpt_answer);
+    }
+
+    public List<String> getProductName(){
+        return reviewMapper.selectAnswerName();
+    }
+
+    public int getAllProduct(String productName){
+        return reviewMapper.selectAllCount(productName);
+    }
+
+    public int getAllCompare(String name){
+        return reviewMapper.selectCompareCount(name);
     }
 }

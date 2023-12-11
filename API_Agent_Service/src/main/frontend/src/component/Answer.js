@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
+import React,  {useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Container, Nav, Navbar, Button} from 'react-bootstrap';
-import { FormControl, InputGroup, Form } from 'react-bootstrap';
+import { Container, Nav, Navbar} from 'react-bootstrap';
 import 'chart.js/auto';
 import {Bar, Doughnut} from "react-chartjs-2";
 import './Answer.css';
 import {Link} from "react-router-dom";
 
 
-const AnswerComponent = ({mostposAnswerCount, positiveAnswerCount, normalAnswerCount,negativeAnswerCount,mostnegAnswerCount }) => {
+const AnswerComponent = ({mostposAnswerCount, positiveAnswerCount, normalAnswerCount,negativeAnswerCount,mostnegAnswerCount, allAnswerCounts }) => {
     return (
         <div>
             {/*<h2>Review Information for {productName}</h2>*/}
+            <p>총 갯수: {allAnswerCounts}</p>
             <p>매우 좋음: {mostposAnswerCount}</p>
             <p>좋음: {positiveAnswerCount}</p>
             <p>보통: {normalAnswerCount}</p>
@@ -21,13 +21,19 @@ const AnswerComponent = ({mostposAnswerCount, positiveAnswerCount, normalAnswerC
     );
 };
 
+
+
+
 const Answer = () => {
+
     const [productName, setProductName] = useState('');
+    const [selectProducts, setSelectProducts] = useState([]);
     const [mostposAnswerCount, setMostPositiveAnswerCount] = useState(null);
     const [positiveAnswerCount, setPositiveAnswerCount] = useState(null);
     const [normalAnswerCount, setNormalAnswerCount] = useState(null);
     const [negativeAnswerCount, setNegativeAnswerCount] = useState(null);
     const [mostnegAnswerCount, setMostNegativeAnswerCount] = useState(null);
+    const [allAnswerCounts, setAllAnswerCount] = useState('');
     const [showAnswerComponent, setShowAnswerComponent] = useState(false);
 
     const getCountByAnswer = async () => {
@@ -43,12 +49,17 @@ const Answer = () => {
             const data = await response.json();
 
             // 결과 값을 상태에 업데이트
+
+            setSelectProducts(data.SelectProduct);
+            console.log(data.SelectProduct);
             setMostPositiveAnswerCount(data.MostPositiveAnswerCount);
             setPositiveAnswerCount(data.PositiveAnswerCount);
             setNormalAnswerCount(data.NormalAnswerCount);
             setNegativeAnswerCount(data.NegativeAnswerCount);
             setMostNegativeAnswerCount(data.MostNegativeAnswerCount);
+            setAllAnswerCount(data.AllAnswerCount);
             setShowAnswerComponent(true); // AnswerComponent를 보이도록 설정
+
 
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -79,29 +90,39 @@ const Answer = () => {
                 </Container>
             </Navbar>
             <br />
-
-            <h1>Review Information</h1>
-            <Form >
-                <Form.Label></Form.Label>
-                <InputGroup className="mb-3">
-                    <FormControl
-                        type="text"
-                        placeholder="Search Product"
+            <div>
+                {/* Existing Navbar and other components */}
+                <br />
+                <div>
+                    <h3>제품명: {productName}</h3>
+                    {/* Bootstrap-styled Dropdown for selecting a product */}
+                    <select
+                        className="form-select" // oBotstrap class for styling select dropdown
                         value={productName}
-                        onChange={(e) => setProductName(e.target.value)}
-                        className = "small-placeholder"
-                    />
-                </InputGroup>
-            </Form>
-            <br />
-            <Button onClick={getCountByAnswer}>Get Answer Count</Button>
+
+                        onClick={()=>getCountByAnswer()}
+
+                        onChange={(e) => setProductName(e.target.value)
+                        }
+                    >
+                        {selectProducts.map((product, index) => (
+                            <option key={index} value={product}>
+                                {product}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+                {/* Existing showAnswerComponent logic and components */}
+            </div>
+
+
 
             {showAnswerComponent && (
 
                 <div className="c_container">
                     <div className="Answercontainer">
                         <AnswerComponent
-                            productName={productName}
+                            allAnswerCounts={allAnswerCounts}
                             mostposAnswerCount={mostposAnswerCount}
                             positiveAnswerCount={positiveAnswerCount}
                             normalAnswerCount={normalAnswerCount}

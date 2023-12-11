@@ -21,5 +21,13 @@ public interface ReviewMapper {
     @Select ("SELECT COUNT(gpt_answer) FROM LACTOFIT_REVIEW WHERE name = #{name} AND gpt_answer = #{gpt_answer}")
     int compareAnswerCount(@Param("name") String name, @Param("gpt_answer") String gpt_answer);
 
+    @Select ("SELECT distinct productName FROM TTOBAK_REVIEW")
+    List<String> selectAnswerName();
+
+    @Select("SELECT COUNT(gpt_answer) FROM TTOBAK_REVIEW where productName = #{productName}")
+    int selectAllCount(@Param("productName") String productName);
+
+    @Select("SELECT COUNT(gpt_answer) FROM LACTOFIT_REVIEW WHERE name = #{name}")
+    int selectCompareCount(@Param("name") String name);
 
 }

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.text.DecimalFormat;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -29,14 +30,20 @@ public class ReviewController {
             int NormalAnswerCount = reviewService.getCount(productName,"보통");
             int NegativeAnswerCount = reviewService.getCount(productName,"나쁨");
             int MostNegativeAnswerCount = reviewService.getCount(productName,"매우나쁨");
+            List<String> SelectProduct = reviewService.getProductName();
+            int AllAnswerCount = reviewService.getAllProduct(productName);
 
             // 결과를 JSON 응답에 추가
-            response.put("productName", productName);
+            response.put("productName",productName);
+            response.put("SelectProduct", SelectProduct);
             response.put("MostPositiveAnswerCount",MostPositiveAnswerCount);
             response.put("PositiveAnswerCount", PositiveAnswerCount);
             response.put("NormalAnswerCount",NormalAnswerCount);
             response.put("NegativeAnswerCount",NegativeAnswerCount);
             response.put("MostNegativeAnswerCount",MostNegativeAnswerCount);
+            response.put("AllAnswerCount",AllAnswerCount);
+
+
         } catch (Exception e) {
             // 에러가 발생하면 에러 메시지를 응답에 추가
             response.put("error", e.getMessage());
@@ -61,7 +68,8 @@ public class ReviewController {
             int NormalAnswerCount = reviewService.getCount(productName,"보통");
             int NegativeAnswerCount = reviewService.getCount(productName,"나쁨");
             int MostNegativeAnswerCount = reviewService.getCount(productName,"매우나쁨");
-            int AllAnswerCount = MostPositiveAnswerCount+PositiveAnswerCount+NormalAnswerCount+NegativeAnswerCount+MostNegativeAnswerCount;
+            int AllAnswerCount = reviewService.getAllProduct(productName);
+
 
             // reviewService를 통해 getCompareCount 함수 호출
             int MostPositiveCompareCount = reviewService.getCompareCount(name,"매우좋음");
@@ -69,7 +77,9 @@ public class ReviewController {
             int NormalCompareCount  = reviewService.getCompareCount(name,"보통");
             int NegativeCompareCount = reviewService.getCompareCount(name,"나쁨");
             int MostNegativeCompareCount = reviewService.getCompareCount(name,"매우나쁨");
-            int AllCompareCount = MostPositiveCompareCount+PositiveCompareCount+NormalCompareCount+NegativeCompareCount+MostNegativeCompareCount;
+            int AllCompareCount = reviewService.getAllCompare(name);
+
+            System.out.print(AllCompareCount);
 
             // 또박케어 5지선다 대답 비율
 
@@ -87,13 +97,18 @@ public class ReviewController {
             double NegativeComparePer = (double) NegativeCompareCount / AllCompareCount;
             double MostNegativeComparePer = (double) MostNegativeCompareCount / AllCompareCount;
 
+            List<String> SelectProduct = reviewService.getProductName();
+
             //또박케어 데이터
+            response.put("SelectProduct",SelectProduct);
+
             response.put("productName", productName);
             response.put("MostPositiveAnswerCount",MostPositiveAnswerCount);
             response.put("PositiveAnswerCount", PositiveAnswerCount);
             response.put("NormalAnswerCount",NormalAnswerCount);
             response.put("NegativeAnswerCount",NegativeAnswerCount);
             response.put("MostNegativeAnswerCount",MostNegativeAnswerCount);
+            response.put("AllAnswerCount",AllAnswerCount);
 
             // 락토핏 데이터
             response.put("name", name);
@@ -102,7 +117,7 @@ public class ReviewController {
             response.put("NormalCompareCount",NormalCompareCount);
             response.put("NegativeCompareCount",NegativeCompareCount);
             response.put("MostNegativeCompareCount",MostNegativeCompareCount);
-
+            response.put("AllCompareCount",AllCompareCount);
             //또박케어 선호도 퍼센트
             response.put("MostPositiveAnswerPer", Double.parseDouble(percentageFormat.format(MostPositiveAnswerPer)));
             response.put("PositiveAnswerPer", Double.parseDouble(percentageFormat.format(PositiveAnswerPer)));

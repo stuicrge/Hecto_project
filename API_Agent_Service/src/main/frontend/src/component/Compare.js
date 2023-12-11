@@ -1,19 +1,21 @@
-import React, { useState} from 'react';
+import React, {useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Container, Nav, Navbar, Button, FormControl, InputGroup, Form } from 'react-bootstrap';
+import { Container, Nav, Navbar} from 'react-bootstrap';
 import { Bar } from 'react-chartjs-2';
 import './Answer.css';
 import {Link} from "react-router-dom";
 const PercentComponents = ({ mostposAnswerPer, positiveAnswerPer, normalAnswerPer, negativeAnswerPer, mostnegAnswerPer,
-                              mostposComparePer, positiveComparePer, normalComparePer, negativeComparePer, mostnegComparePer}) => {
+                              mostposComparePer, positiveComparePer, normalComparePer, negativeComparePer, mostnegComparePer,allAnswerCounts,allCompareCounts}) => {
     return (
         <div>
+            <p>총 개수: {allAnswerCounts}</p>
             <p>매우 좋음: {mostposAnswerPer}</p>
             <p>좋음: {positiveAnswerPer}</p>
             <p>보통: {normalAnswerPer}</p>
             <p>나쁨: {negativeAnswerPer}</p>
             <p>매우 나쁨: {mostnegAnswerPer }</p>
 
+            <p>총 개수: {allCompareCounts}</p>
             <p>매우 좋음: {mostposComparePer}</p>
             <p>좋음: {positiveComparePer}</p>
             <p>보통: {normalComparePer}</p>
@@ -29,11 +31,13 @@ const PercentComponents = ({ mostposAnswerPer, positiveAnswerPer, normalAnswerPe
 const Compare = () => {
 
     const [productName, setProductName] = useState('');
+    const [selectProducts, setSelectProducts] = useState([]);
     const [mostposAnswerPer, setMostPositiveAnswerPer] = useState(null);
     const [positiveAnswerPer, setPositiveAnswerPer] = useState(null);
     const [normalAnswerPer, setNormalAnswerPer] = useState(null);
     const [negativeAnswerPer, setNegativeAnswerPer] = useState(null);
     const [mostnegAnswerPer, setMostNegativeAnswerPer] = useState(null);
+    const [allAnswerCounts, setAllAnswerCounts] = useState('');
     const [showPercentComponents, setShowPercentComponents] = useState(false);
 
     const [mostposComparePer, setMostPositiveComparePer] = useState(null);
@@ -41,7 +45,7 @@ const Compare = () => {
     const [normalComparePer, setNormalComparePer] = useState(null);
     const [negativeComparePer, setNegativeComparePer] = useState(null);
     const [mostnegComparePer, setMostNegativeComparePer] = useState(null);
-
+    const [allCompareCounts, setAllCompareCounts] = useState('');
 
 
 
@@ -59,11 +63,14 @@ const Compare = () => {
 
             const data = await response.json();
 
+            setSelectProducts(data.SelectProduct);
+
             setMostPositiveAnswerPer(data.MostPositiveAnswerPer);
             setPositiveAnswerPer(data.PositiveAnswerPer);
             setNormalAnswerPer(data.NormalAnswerPer);
             setNegativeAnswerPer(data.NegativeAnswerPer);
             setMostNegativeAnswerPer(data.MostNegativeAnswerPer);
+            setAllAnswerCounts(data.AllAnswerCount);
             setShowPercentComponents(true); // AnswerComponent를 보이도록 설정
 
             setMostPositiveComparePer(data.MostPositiveComparePer);
@@ -71,14 +78,14 @@ const Compare = () => {
             setNormalComparePer(data.NormalComparePer);
             setNegativeComparePer(data.NegativeComparePer);
             setMostNegativeComparePer(data.MostNegativeComparePer);
+            setAllCompareCounts(data.AllCompareCount);
 
         } catch (error) {
             console.error('Error fetching data:', error);
-            //setShowAnswerComponent(false); // 에러 발생 시 AnswerComponent를 숨기도록 설정
             setShowPercentComponents(false);
-
         }
     };
+
 
     const chartData = {
         labels: ['매우 좋음', '좋음', '보통', '나쁨', '매우 나쁨'],
@@ -109,31 +116,42 @@ const Compare = () => {
                 </Container>
             </Navbar>
             <br />
-
-            <h1>Review Information</h1>
-            <Form >
-                <Form.Select></Form.Select>
-                <InputGroup className="mb-3">
-                    <FormControl
-                        type="text"
-                        placeholder="Search Product"
+            <div>
+                {/* Existing Navbar and other components */}
+                <br />
+                <div>
+                    <h3>제품명: {productName}</h3>
+                    {/* Bootstrap-styled Dropdown for selecting a product */}
+                    <select
+                        className="form-select" // oBotstrap class for styling select dropdown
                         value={productName}
-                        onChange={(e) => setProductName(e.target.value)}
-                        className = "small-placeholder"
-                    />
-                </InputGroup>
-            </Form>
-            <br />
-            <Button onClick={CompareReviews}>Get Answer Count</Button>
+
+                        onClick={()=>CompareReviews()}
+
+                        onChange={(e) => setProductName(e.target.value)
+                        }
+                    >
+                        {selectProducts.map((product, index) => (
+                            <option key={index} value={product}>
+                                {product}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+                {/* Existing showAnswerComponent logic and components */}
+            </div>
             {showPercentComponents && (
                 <div>
                     <PercentComponents
+                        allAnswerCounts = {allAnswerCounts}
                         mostposAnswerPer={mostposAnswerPer}
                         positiveAnswerPer={positiveAnswerPer}
                         normalAnswerPer={normalAnswerPer}
                         negativeAnswerPer={negativeAnswerPer}
                         mostnegAnswerPer={mostnegAnswerPer}
 
+
+                        allCompareCounts={allCompareCounts}
                         mostposComparePer={mostposComparePer}
                         positiveComparePer={positiveComparePer}
                         normalComparePer={normalComparePer}

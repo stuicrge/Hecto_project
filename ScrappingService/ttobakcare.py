@@ -52,7 +52,7 @@ def reviewScrapping(before_date):
         imagelist.append(None)
         return
 
-    product_name = driver.find_element(By.CLASS_NAME, 'goods-name').text
+    product_name = (driver.find_element(By.CLASS_NAME, 'goods-name').text).rstrip()
 
     bs = BeautifulSoup(driver.page_source, 'html.parser')
     image = bs.select_one("img[data-v-ae438176]")
@@ -70,13 +70,12 @@ def reviewScrapping(before_date):
         reviews = review.find_all("li")
 
 
-        for i in range(1, len(reviews)-1):    
+        for i in range(len(reviews)-1):    
             date = dt.datetime.strptime(reviews[i].select_one('.board-list-date').text, "%Y-%m-%d").date()
             print(date)
 
             if date < before_date:
-                loop = False
-                break
+                return
 
             try:
                 title = reviews[i].select_one('.board-list-title > span').get_text()
@@ -92,8 +91,9 @@ def reviewScrapping(before_date):
             contentlist.append(content) 
             datelist.append(date)
 
-        try: 
-            paging_button = driver.find_element(By.CLASS_NAME, 'next')
+        try:
+            board_paging = bs.find(class_='board_paging')
+            paging_button = board_paging.find(class_='next')
             time.sleep(2)
             if paging_button.is_displayed():
                 time.sleep(2)

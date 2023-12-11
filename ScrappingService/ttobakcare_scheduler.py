@@ -48,7 +48,7 @@ def reviewScrapping(before_date):
     if(empty.text == "등록된 게시글이 없습니다."):
         return
 
-    product_name = driver.find_element(By.CLASS_NAME, 'goods-name').text
+    product_name = (driver.find_element(By.CLASS_NAME, 'goods-name').text).rstrip()
     print(product_name)
     
     loop = True
@@ -58,14 +58,13 @@ def reviewScrapping(before_date):
         review = bs.find(class_="board-list")
         reviews = review.find_all("li")
 
-        for i in range(1, len(reviews)-1):
+        for i in range(len(reviews)-1):
             date = dt.datetime.strptime(reviews[i].select_one('.board-list-date').text, "%Y-%m-%d").date()
 
             time.sleep(3)
             
             if date < before_date:
-                loop = False
-                break
+                return
 
             try:
                 title = reviews[i].select_one('.board-list-title > span').get_text()
@@ -105,7 +104,7 @@ def main():
     before_one_day = (now_date + relativedelta(days=-1)).date() # 하루 전
 
     # 페이지 이동
-    for i in range(len(product_li)):
+    for i in range(13, len(product_li)):
         # 각기 다른 상품 클릭 반복
         products = driver.find_element(By.XPATH, f'//*[@id="list0001"]/div/ul/li[{i+1}]/div/span[2]')
         print(i+1)
@@ -154,7 +153,7 @@ def main():
 # 스케줄러
 sched = BlockingScheduler(timezone='Asia/Seoul')
 
-sched.add_job(main, 'cron', hour='12',minute='0')  
+sched.add_job(main, 'cron', hour='14',minute='35')  
 
 print('sched before~')
 try:

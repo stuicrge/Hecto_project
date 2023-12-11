@@ -14,7 +14,7 @@ from apscheduler.schedulers.blocking import BlockingScheduler
 from insertDB_lactofit import insertDB_lactofit
 
 import sys
-sys.path.append(r'C:\ReviewService\GptApiService')
+sys.path.append(r'C:\localrepository\Hecto_project\package')
 
 from gpt_lactofit import gpt_lactofit
 from updateDB_lactofit import updateDB_lactofit

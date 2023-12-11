@@ -69,7 +69,7 @@ def reviewScrapping(before_date):
             try:
                 title = reviews[i].select_one('.board-list-title > span').get_text()
                 print(title)
-                content = reviews[i].select_one('.board-list-content > p').get_text(strip=True)
+                content = reviews[i].select_one('.board-list-html').get_text(strip=True)
                 print(content)
                 
                 print(date)
@@ -83,7 +83,7 @@ def reviewScrapping(before_date):
             datelist.append(date)
         
         try:
-            paging_button = driver.find_element(By.CLASS_NAME, 'next')
+            paging_button = driver.find_element(By.XPATH,'//*[@id="traceLogTarget"]/div[3]/div[2]/div/div[4]/button[2]')
             time.sleep(2)
             if paging_button.is_displayed():
                 time.sleep(2)

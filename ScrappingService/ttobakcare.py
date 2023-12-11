@@ -39,6 +39,8 @@ def reviewScrapping(before_date):
     review_button = wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="traceLogTarget"]/div[2]/div/div/button[2]')))
     review_button.click()
     time.sleep(2)
+    action.send_keys(Keys.END)
+    time.sleep(2)
 
     # 리뷰가 없을 경우
     empty = driver.find_element(By.CLASS_NAME, 'board-list-wrap.empty')
@@ -80,7 +82,7 @@ def reviewScrapping(before_date):
             try:
                 title = reviews[i].select_one('.board-list-title > span').get_text()
                 print(title)
-                content = reviews[i].select_one('.board-list-content > p').get_text(strip=True)
+                content = reviews[i].select_one('.board-list-html').get_text(strip=True)
                 print(content)
 
             except AttributeError as a :
@@ -92,8 +94,8 @@ def reviewScrapping(before_date):
             datelist.append(date)
 
         try:
-            board_paging = bs.find(class_='board_paging')
-            paging_button = board_paging.find(class_='next')
+           
+            paging_button = driver.find_element(By.XPATH,'//*[@id="traceLogTarget"]/div[3]/div[2]/div/div[4]/button[2]')
             time.sleep(2)
             if paging_button.is_displayed():
                 time.sleep(2)
@@ -114,7 +116,7 @@ def main():
     before_one_year = (now_date + relativedelta(years=-1)).date() # 1년 전
 
     # 페이지 이동
-    for i in range(len(product_li)):
+    for i in range(13,len(product_li)):
         # 각기 다른 상품 클릭 반복
         products = driver.find_element(By.XPATH, f'//*[@id="list0001"]/div/ul/li[{i+1}]/div/span[2]')
         print(i+1)
@@ -141,7 +143,7 @@ def main():
         driver.back()         
         time.sleep(3) 
     
-    driver.quit()
+
 
 main()
 

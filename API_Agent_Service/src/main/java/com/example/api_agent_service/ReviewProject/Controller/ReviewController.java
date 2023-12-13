@@ -60,7 +60,7 @@ public class ReviewController {
         try {
 
 
-            DecimalFormat percentageFormat = new DecimalFormat("#.####");
+            DecimalFormat percentageFormat = new DecimalFormat("#.##");
 
             // reviewService를 통해 getCount 함수 호출
             int MostPositiveAnswerCount = reviewService.getCount(productName, "매우좋음");
@@ -83,19 +83,19 @@ public class ReviewController {
 
             // 또박케어 5지선다 대답 비율
 
-            double MostPositiveAnswerPer = (double) MostPositiveAnswerCount / AllAnswerCount;
-            double PositiveAnswerPer = (double) PositiveAnswerCount / AllAnswerCount;
-            double NormalAnswerPer = (double) NormalAnswerCount / AllAnswerCount;
-            double NegativeAnswerPer = (double) NegativeAnswerCount / AllAnswerCount;
-            double MostNegativeAnswerPer = (double) MostNegativeAnswerCount / AllAnswerCount;
+            double MostPositiveAnswerPer = ((double) MostPositiveAnswerCount / AllAnswerCount) * 100;
+            double PositiveAnswerPer = ((double) PositiveAnswerCount / AllAnswerCount) * 100;
+            double NormalAnswerPer = ((double) NormalAnswerCount / AllAnswerCount) * 100;
+            double NegativeAnswerPer = ((double) NegativeAnswerCount / AllAnswerCount) * 100;
+            double MostNegativeAnswerPer = ((double) MostNegativeAnswerCount / AllAnswerCount) * 100;
 
             // 락토핏 5지선다 대답 비율
 
-            double MostPositiveComparePer = (double) MostPositiveCompareCount / AllCompareCount;
-            double PositiveComparePer = (double) PositiveCompareCount / AllCompareCount;
-            double NormalComparePer = (double) NormalCompareCount / AllCompareCount;
-            double NegativeComparePer = (double) NegativeCompareCount / AllCompareCount;
-            double MostNegativeComparePer = (double) MostNegativeCompareCount / AllCompareCount;
+            double MostPositiveComparePer = ((double) MostPositiveCompareCount / AllCompareCount) * 100;
+            double PositiveComparePer = ((double) PositiveCompareCount / AllCompareCount) * 100;
+            double NormalComparePer = ((double) NormalCompareCount / AllCompareCount) * 100;
+            double NegativeComparePer = ((double) NegativeCompareCount / AllCompareCount) * 100;
+            double MostNegativeComparePer = ((double) MostNegativeCompareCount / AllCompareCount) * 100;
 
             List<String> SelectProduct = reviewService.getProductName();
 
@@ -141,6 +141,5 @@ public class ReviewController {
 
         return response;
     }
-
 }
 

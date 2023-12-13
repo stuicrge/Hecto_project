@@ -86,6 +86,7 @@ const Answer = () => {
                     <Nav className="me-auto">
                         <Nav.Link as={Link} to="/getCountByAnswer">또박케어 상품 후기 선호도</Nav.Link>
                         <Nav.Link as={Link} to="/CompareReviews">타사 제품과 비교</Nav.Link>
+                        <Nav.Link as={Link} to="/getFeedbackReview">또박케어 상품의 개선점</Nav.Link>
                     </Nav>
                 </Container>
             </Navbar>
@@ -93,11 +94,11 @@ const Answer = () => {
             <div>
                 {/* Existing Navbar and other components */}
                 <br />
-                <div>
-                    <h3>제품명: {productName}</h3>
+                <h3>제품명: {productName}</h3>
+                <div className="select_container">
                     {/* Bootstrap-styled Dropdown for selecting a product */}
                     <select
-                        className="form-select" // oBotstrap class for styling select dropdown
+                        className="form-select custom-select-width" // oBotstrap class for styling select dropdown
                         value={productName}
 
                         onClick={()=>getCountByAnswer()}

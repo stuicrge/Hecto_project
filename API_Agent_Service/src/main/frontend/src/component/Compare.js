@@ -2,25 +2,30 @@ import React, {useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Nav, Navbar} from 'react-bootstrap';
 import { Bar } from 'react-chartjs-2';
-import './Answer.css';
+import './Compare.css';
 import {Link} from "react-router-dom";
 const PercentComponents = ({ mostposAnswerPer, positiveAnswerPer, normalAnswerPer, negativeAnswerPer, mostnegAnswerPer,
-                              mostposComparePer, positiveComparePer, normalComparePer, negativeComparePer, mostnegComparePer,allAnswerCounts,allCompareCounts}) => {
+                              mostposComparePer, positiveComparePer, normalComparePer, negativeComparePer, mostnegComparePer,allAnswerCounts,allCompareCounts,productName}) => {
     return (
-        <div>
-            <p>총 개수: {allAnswerCounts}</p>
-            <p>매우 좋음: {mostposAnswerPer}</p>
-            <p>좋음: {positiveAnswerPer}</p>
-            <p>보통: {normalAnswerPer}</p>
-            <p>나쁨: {negativeAnswerPer}</p>
-            <p>매우 나쁨: {mostnegAnswerPer }</p>
-
-            <p>총 개수: {allCompareCounts}</p>
-            <p>매우 좋음: {mostposComparePer}</p>
-            <p>좋음: {positiveComparePer}</p>
-            <p>보통: {normalComparePer}</p>
-            <p>나쁨: {negativeComparePer}</p>
-            <p>매우 나쁨: {mostnegComparePer}</p>
+        <div className="r_container">
+            <div className="ttobak">
+                <p>제품명: {productName}</p>
+                <p>총 개수: {allAnswerCounts}</p>
+                <p>매우 좋음: {mostposAnswerPer}%</p>
+                <p>좋음: {positiveAnswerPer}%</p>
+                <p>보통: {normalAnswerPer}%</p>
+                <p>나쁨: {negativeAnswerPer}%</p>
+                <p>매우 나쁨: {mostnegAnswerPer }%</p>
+            </div>
+            <div className="lactofit">
+                <p>제품명: {'락토핏 골드 1통 (50일분)'}</p>
+                <p>총 개수: {allCompareCounts}</p>
+                <p>매우 좋음: {mostposComparePer}%</p>
+                <p>좋음: {positiveComparePer}%</p>
+                <p>보통: {normalComparePer}%</p>
+                <p>나쁨: {negativeComparePer}%</p>
+                <p>매우 나쁨: {mostnegComparePer}%</p>
+            </div>
         </div>
     );
 };
@@ -112,6 +117,7 @@ const Compare = () => {
                     <Nav className="me-auto">
                         <Nav.Link as={Link} to="/getCountByAnswer">또박케어 상품 후기 선호도</Nav.Link>
                         <Nav.Link as={Link} to="/CompareReviews">타사 제품과 비교</Nav.Link>
+                        <Nav.Link as={Link} to="/getFeedbackReview">또박케어 상품의 개선점</Nav.Link>
                     </Nav>
                 </Container>
             </Navbar>
@@ -119,11 +125,11 @@ const Compare = () => {
             <div>
                 {/* Existing Navbar and other components */}
                 <br />
-                <div>
-                    <h3>제품명: {productName}</h3>
+                <h3>제품명: {productName}</h3>
+                <div className="select_container">
                     {/* Bootstrap-styled Dropdown for selecting a product */}
                     <select
-                        className="form-select" // oBotstrap class for styling select dropdown
+                        className="form-select custom-select-width" // oBotstrap class for styling select dropdown
                         value={productName}
 
                         onClick={()=>CompareReviews()}
@@ -143,6 +149,7 @@ const Compare = () => {
             {showPercentComponents && (
                 <div>
                     <PercentComponents
+                        productName={productName}
                         allAnswerCounts = {allAnswerCounts}
                         mostposAnswerPer={mostposAnswerPer}
                         positiveAnswerPer={positiveAnswerPer}

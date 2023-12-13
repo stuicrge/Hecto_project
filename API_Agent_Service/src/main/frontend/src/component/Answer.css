@@ -8,9 +8,20 @@
     /* 다른 스타일 속성도 추가할 수 있습니다. */
 }
 
+.select_container{
+    display: flex;
+    justify-content:center;
+
+}
+
+.custom-select-width {
+    width: 425px;
+}
+
 .Answercontainer {
     /* 기존 스타일 속성들 유지 */
     margin-left:70%;
+    font-family: 'Noto Sans', sans-serif;
 }
 
 .chartcontainer {
@@ -23,6 +34,6 @@
 
 .Barchartcontainer,
 .Doughnutchartcontainer {
-    width: 30%
+    width: 40%
 }
 

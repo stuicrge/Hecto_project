@@ -35,4 +35,8 @@ public class ReviewService {
     public int getAllCompare(String name){
         return reviewMapper.selectCompareCount(name);
     }
+
+    public List<String> getFeedback(String productName, String gpt_answer) {
+        return reviewMapper.selectFeedbackContent(productName,gpt_answer);
+    }
 }

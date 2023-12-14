@@ -6,48 +6,50 @@ import './Feedback.css';
 const FeedbackComponents = ({ mostnegFeedback, negFeedback,mostnegType,negType,mostnegImprove,negImprove }) => {
     return (
         <div className="feedback_container">
-            <div className="mostneg-container">
-                <Table striped bordered hover size="sm">
-                    <thead>
-                    <tr>
-                        <td>유형</td>
-                        <td>후기</td>
-                        <td>개선점</td>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {/* negType 배열의 각 항목에 대한 행 */}
-                    {mostnegType.map((sentence, index) => (
-                        <tr key={index}>
-                            <td>{sentence}</td>
-                            <td>{mostnegFeedback[index]}</td>
-                            <td>{mostnegImprove[index]}</td>
+            {mostnegType.length > 0 && (
+                <div className="mostneg-container">
+                    <Table striped bordered hover size="sm">
+                        <thead>
+                        <tr>
+                            <td>유형</td>
+                            <td>후기</td>
+                            <td>개선점</td>
                         </tr>
-                    ))}
-                    </tbody>
-                </Table>
-            </div>
-            <div className="neg-container">
-                <Table striped bordered hover size="sm">
-                    <thead>
-                    <tr>
-                        <td>유형</td>
-                        <td>후기</td>
-                        <td>개선점</td>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {/* negType 배열의 각 항목에 대한 행 */}
-                    {negType.map((sentence, index) => (
-                        <tr key={index}>
-                            <td>{sentence}</td>
-                            <td>{negFeedback[index]}</td>
-                            <td>{negImprove[index]}</td>
+                        </thead>
+                        <tbody>
+                        {mostnegType.map((sentence, index) => (
+                            <tr key={index}>
+                                <td>{sentence}</td>
+                                <td>{mostnegFeedback[index]}</td>
+                                <td>{mostnegImprove[index]}</td>
+                            </tr>
+                        ))}
+                        </tbody>
+                    </Table>
+                </div>
+            )}
+            {negType.length > 0 && (
+                <div className="neg-container">
+                    <Table striped bordered hover size="sm">
+                        <thead>
+                        <tr>
+                            <td>유형</td>
+                            <td>후기</td>
+                            <td>개선점</td>
                         </tr>
-                    ))}
-                    </tbody>
-                </Table>
-            </div>
+                        </thead>
+                        <tbody>
+                        {negType.map((sentence, index) => (
+                            <tr key={index}>
+                                <td>{sentence}</td>
+                                <td>{negFeedback[index]}</td>
+                                <td>{negImprove[index]}</td>
+                            </tr>
+                        ))}
+                        </tbody>
+                    </Table>
+                </div>
+            )}
         </div>
     );
 };

@@ -1,53 +1,57 @@
 import React, {useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Container, Nav, Navbar} from 'react-bootstrap';
-import './Feedback.css';
+import { Container, Nav, Navbar,Table} from 'react-bootstrap';
 import {Link} from "react-router-dom";
-
+import './Feedback.css';
 const FeedbackComponents = ({ mostnegFeedback, negFeedback,mostnegType,negType,mostnegImprove,negImprove }) => {
-
     return (
-
         <div className="feedback_container">
-            <div className="feedback-section">
-                <h4>나쁨후기</h4>
-                {negFeedback.map((sentence, index) => (
-                    <p key={index}>{index+1}.  {sentence}</p>
+            <div className="mostneg-container">
+            <Table striped="columns">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>유형</th>
+                    <th>후기</th>
+                    <th>피드백</th>
+                </tr>
+                </thead>
+                <tbody>
+                {negType.map((type, index) => (
+                    <tr key={index}>
+                        <td>{index + 1}</td>
+                        <td>{type}</td>
+                        <td>{negFeedback[index]}</td>
+                        <td>{negImprove[index]}</td>
+                    </tr>
                 ))}
-            </div>
-            <div className="feedback-section">
-                <h4>매우나쁨후기</h4>
-                {mostnegFeedback.map((sentence, index) => (
-                    <p key={index}>{index+1}.  {sentence}</p>
-                ))}
+                </tbody>
+            </Table>
             </div>
 
-            <div>
-                <h4>매우나쁨타입</h4>
-                {mostnegType.map((sentence, index) => (
-                    <p key={index}>{index+1}.  {sentence}</p>
+            <div className="neg-container">
+            <Table striped="columns">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>유형</th>
+                    <th>후기</th>
+                    <th>피드백</th>
+                </tr>
+                </thead>
+                <tbody>
+                {mostnegFeedback.map((review, index) => (
+                    <tr key={index}>
+                        <td>{index + 1}</td>
+                        <td>{mostnegType[index]}</td>
+                        <td>{review}</td>
+                        <td>{mostnegImprove[index]}</td>
+                    </tr>
                 ))}
-            </div>
-            <div>
-                <h4>나쁨타입</h4>
-                {negType.map((sentence, index) => (
-                    <p key={index}>{index+1}.  {sentence}</p>
-                ))}
-            </div>
-            <div>
-                <h4>개선점</h4>
-                {mostnegImprove.map((sentence, index) => (
-                    <p key={index}>{index+1}.  {sentence}</p>
-                ))}
-            </div>
-            <div>
-                <h4>개선점</h4>
-                {negImprove.map((sentence, index) => (
-                    <p key={index}>{index+1}.  {sentence}</p>
-                ))}
+                </tbody>
+            </Table>
             </div>
         </div>
-
     );
 };
 

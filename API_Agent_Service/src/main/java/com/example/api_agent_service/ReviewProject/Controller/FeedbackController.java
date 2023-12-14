@@ -26,7 +26,7 @@ public class FeedbackController {
             List<String> MostNegativeReviewFeedback = feedbackService.getFeedbackReview(productName,"매우나쁨");
             List<String> SelectProduct = feedbackService.getProductName();
 
-            System.out.println(NegativeReviewFeedback);
+//            System.out.println(NegativeReviewFeedback);
 
             response.put("NegativeReviewFeedback",NegativeReviewFeedback);
             response.put("MostNegativeReviewFeedback",MostNegativeReviewFeedback);

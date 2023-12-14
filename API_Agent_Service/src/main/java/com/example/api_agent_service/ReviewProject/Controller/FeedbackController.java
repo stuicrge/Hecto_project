@@ -26,7 +26,7 @@ public class FeedbackController {
             List<String> MostNegativeReviewFeedback = feedbackService.getFeedbackReview(productName,"매우나쁨");
             List<String> SelectProduct = feedbackService.getProductName();
 
-//            System.out.println(NegativeReviewFeedback);
+
 
             response.put("NegativeReviewFeedback",NegativeReviewFeedback);
             response.put("MostNegativeReviewFeedback",MostNegativeReviewFeedback);
@@ -40,11 +40,15 @@ public class FeedbackController {
             response.put("NegativeTypeFeedback" ,NegativeTypeFeedback);
             response.put("MostNegativeTypeFeedback",MostNegativeTypeFeedback);
 
+            System.out.print(NegativeTypeFeedback);
+
             List<String> NegativeImproveFeedback = feedbackService.getFeedbackImprove(productName, "나쁨");
             List<String> MostNegativeImproveFeedback = feedbackService.getFeedbackImprove(productName,"매우나쁨");
 
             response.put("NegativeImproveFeedback",NegativeImproveFeedback);
             response.put("MostNegativeImproveFeedback",MostNegativeImproveFeedback);
+
+            System.out.print(NegativeImproveFeedback);
 
         } catch (Exception e) {
             // 에러가 발생하면 에러 메시지를 응답에 추가

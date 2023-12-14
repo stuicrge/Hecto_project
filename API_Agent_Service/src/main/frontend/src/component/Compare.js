@@ -68,7 +68,7 @@ const Compare = () => {
 
             const data = await response.json();
 
-            setSelectProducts(data.SelectProduct);
+            setSelectProducts(data.SelectDesimone);
 
             setMostPositiveAnswerPer(data.MostPositiveAnswerPer);
             setPositiveAnswerPer(data.PositiveAnswerPer);

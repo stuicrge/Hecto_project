@@ -1,55 +1,52 @@
 import React, {useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Container, Nav, Navbar,Table} from 'react-bootstrap';
+import {Container, Nav, Navbar, Table} from 'react-bootstrap';
 import {Link} from "react-router-dom";
 import './Feedback.css';
 const FeedbackComponents = ({ mostnegFeedback, negFeedback,mostnegType,negType,mostnegImprove,negImprove }) => {
     return (
         <div className="feedback_container">
             <div className="mostneg-container">
-            <Table striped="columns">
-                <thead>
-                <tr>
-                    <th>#</th>
-                    <th>유형</th>
-                    <th>후기</th>
-                    <th>피드백</th>
-                </tr>
-                </thead>
-                <tbody>
-                {negType.map((type, index) => (
-                    <tr key={index}>
-                        <td>{index + 1}</td>
-                        <td>{type}</td>
-                        <td>{negFeedback[index]}</td>
-                        <td>{negImprove[index]}</td>
+                <Table striped bordered hover size="sm">
+                    <thead>
+                    <tr>
+                        <td>유형</td>
+                        <td>후기</td>
+                        <td>개선점</td>
                     </tr>
-                ))}
-                </tbody>
-            </Table>
+                    </thead>
+                    <tbody>
+                    {/* negType 배열의 각 항목에 대한 행 */}
+                    {mostnegType.map((sentence, index) => (
+                        <tr key={index}>
+                            <td>{sentence}</td>
+                            <td>{mostnegFeedback[index]}</td>
+                            <td>{mostnegImprove[index]}</td>
+                        </tr>
+                    ))}
+                    </tbody>
+                </Table>
             </div>
-
             <div className="neg-container">
-            <Table striped="columns">
-                <thead>
-                <tr>
-                    <th>#</th>
-                    <th>유형</th>
-                    <th>후기</th>
-                    <th>피드백</th>
-                </tr>
-                </thead>
-                <tbody>
-                {mostnegFeedback.map((review, index) => (
-                    <tr key={index}>
-                        <td>{index + 1}</td>
-                        <td>{mostnegType[index]}</td>
-                        <td>{review}</td>
-                        <td>{mostnegImprove[index]}</td>
+                <Table striped bordered hover size="sm">
+                    <thead>
+                    <tr>
+                        <td>유형</td>
+                        <td>후기</td>
+                        <td>개선점</td>
                     </tr>
-                ))}
-                </tbody>
-            </Table>
+                    </thead>
+                    <tbody>
+                    {/* negType 배열의 각 항목에 대한 행 */}
+                    {negType.map((sentence, index) => (
+                        <tr key={index}>
+                            <td>{sentence}</td>
+                            <td>{negFeedback[index]}</td>
+                            <td>{negImprove[index]}</td>
+                        </tr>
+                    ))}
+                    </tbody>
+                </Table>
             </div>
         </div>
     );
@@ -58,12 +55,12 @@ const FeedbackComponents = ({ mostnegFeedback, negFeedback,mostnegType,negType,m
 const Feedback = () => {
     const [productName, setProductName] = useState('');
     const [selectProducts, setSelectProducts] = useState([]);
-    const [negFeedback, setNegativeFeedback] = useState('');
-    const [mostnegFeedback, setMostNegativeFeedback] =useState('');
-    const [mostnegType, setNegativeType] = useState('');
-    const [negType, setMostNegativeType] =useState('');
-    const [mostnegImprove, setNegativeImprove] = useState('');
-    const [negImprove, setMostNegativeImprove] =useState('');
+    const [negFeedback, setNegativeFeedback] = useState([]);
+    const [mostnegFeedback, setMostNegativeFeedback] =useState([]);
+    const [negType, setNegativeType] = useState([]);
+    const [mostnegType, setMostNegativeType] =useState([]);
+    const [negImprove, setNegativeImprove] = useState([]);
+    const [mostnegImprove, setMostNegativeImprove] =useState([]);
 
     const [showFeedbackComponents, setShowFeedbackComponents] = useState(false);
 
@@ -130,11 +127,11 @@ const Feedback = () => {
                 <div>
                     <FeedbackComponents
                         productName={productName}
-                        negFeedback={negFeedback}
-                        mostnegFeedback={mostnegFeedback}
                         negType={negType}
-                        mostnegType={mostnegType}
+                        negFeedback={negFeedback}
                         negImprove={negImprove}
+                        mostnegType={mostnegType}
+                        mostnegFeedback={mostnegFeedback}
                         mostnegImprove={mostnegImprove}
                     />
                 </div>

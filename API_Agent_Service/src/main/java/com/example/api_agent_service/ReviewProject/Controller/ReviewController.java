@@ -97,10 +97,10 @@ public class ReviewController {
             double NegativeComparePer = ((double) NegativeCompareCount / AllCompareCount) * 100;
             double MostNegativeComparePer = ((double) MostNegativeCompareCount / AllCompareCount) * 100;
 
-            List<String> SelectProduct = reviewService.getProductName();
+            List<String> SelectDesimone = reviewService.getDesimone("드시모네");
 
             //또박케어 데이터
-            response.put("SelectProduct",SelectProduct);
+            response.put("SelectDesimone",SelectDesimone);
 
             response.put("productName", productName);
             response.put("MostPositiveAnswerCount",MostPositiveAnswerCount);

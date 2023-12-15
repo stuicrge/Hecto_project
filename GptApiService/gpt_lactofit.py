@@ -1,5 +1,5 @@
 import sys
-sys.path.append(r'C:\localrepository\Hecto_project\package')
+sys.path.append(r'C:\ReviewService\package')
 
 from dbconn import mysqlDbConnection, mysqlDbClose
 import openai

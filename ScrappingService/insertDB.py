@@ -2,7 +2,7 @@ import csv
 import os
 
 import sys
-sys.path.append(r'C:\localrepository\Hecto_project\package')
+sys.path.append(r'C:\ReviewService\package')
 from dbconn import mysqlDbConnection, mysqlDbClose
 
 def insertDB():
@@ -29,7 +29,7 @@ def insertDB():
 
         try:
             for line in fReader2:
-                query = "INSERT INTO ttobak_image (name, image) VALUES (%s, %s)"
+                query = "INSERT INTO ttobak_image (ProductName, image) VALUES (%s, %s)"
                 data = (line[1], line[5])
                 cursor.execute(query, data)
 

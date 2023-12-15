@@ -1,8 +1,17 @@
 package com.example.api_agent_service.ReviewProject.Controller;
-
+import com.example.api_agent_service.ReviewProject.DTO.ReviewCompareDTO;
+import com.example.api_agent_service.ReviewProject.DTO.ReviewDTO;
+import com.example.api_agent_service.ReviewProject.Review;
 import com.example.api_agent_service.ReviewProject.Service.ReviewService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -11,27 +20,36 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
+
+@Tag(name = "사용자", description = "사용자 관련 API")
 @RestController
 public class ReviewController {
 
     @Autowired
     private ReviewService reviewService;  // ReviewService는 reviewMapper를 사용하는 서비스 클래스입니다.
 
+
+
+    @Operation(summary = "제품별 리뷰 통계 수집")
+    @ApiResponse(responseCode = "200", description = "성공적인 응답", content = @Content(schema = @Schema(implementation = ReviewDTO.class)))
     @GetMapping("/getCountByAnswer")
-    public Map<String, Object> getCountByAnswers(
-            @RequestParam("productName") String productName) {
+    public Map<String, Object> getCountByAnswers(@Parameter(description = "조회할 제품명") @RequestParam("productName") String productName) {
 
         Map<String, Object> response = new HashMap<>();
 
+
         try {
+
             // reviewService를 통해 getCountByAnswer 함수 호출
             int MostPositiveAnswerCount = reviewService.getCount(productName, "매우좋음");
             int PositiveAnswerCount = reviewService.getCount(productName, "좋음");
             int NormalAnswerCount = reviewService.getCount(productName,"보통");
-            int NegativeAnswerCount = reviewService.getCount(productName,"나쁨");
             int MostNegativeAnswerCount = reviewService.getCount(productName,"매우나쁨");
+            int NegativeAnswerCount = reviewService.getCount(productName,"나쁨");
             List<String> SelectProduct = reviewService.getProductName();
             int AllAnswerCount = reviewService.getAllProduct(productName);
+
 
             // 결과를 JSON 응답에 추가
             response.put("productName",productName);
@@ -51,23 +69,22 @@ public class ReviewController {
         return response;
     }
 
-
+    @Operation(summary = "타사 제품과의 선호도 비교")
+    @ApiResponse(responseCode = "200", description = "성공적인 응답", content = @Content(schema = @Schema(implementation = ReviewCompareDTO.class)))
     @GetMapping("/CompareReviews")
-    public Map<String, Object> getCompareAnswers(@RequestParam("productName") String productName,
-                                                    @RequestParam("name") String name){
+    public Map<String, Object> getCompareAnswers(@Parameter(description = "조회할 제품명") @RequestParam("productName") String productName, @Parameter(description = "비교할 제품명") @RequestParam("name") String name){
+
         Map<String, Object> response = new HashMap<>();
 
         try {
-
-
             DecimalFormat percentageFormat = new DecimalFormat("#.##");
 
             // reviewService를 통해 getCount 함수 호출
             int MostPositiveAnswerCount = reviewService.getCount(productName, "매우좋음");
             int PositiveAnswerCount = reviewService.getCount(productName, "좋음");
             int NormalAnswerCount = reviewService.getCount(productName,"보통");
-            int NegativeAnswerCount = reviewService.getCount(productName,"나쁨");
             int MostNegativeAnswerCount = reviewService.getCount(productName,"매우나쁨");
+            int NegativeAnswerCount = reviewService.getCount(productName,"나쁨");
             int AllAnswerCount = reviewService.getAllProduct(productName);
 
 
@@ -75,11 +92,11 @@ public class ReviewController {
             int MostPositiveCompareCount = reviewService.getCompareCount(name,"매우좋음");
             int PositiveCompareCount = reviewService.getCompareCount(name,"좋음");
             int NormalCompareCount  = reviewService.getCompareCount(name,"보통");
-            int NegativeCompareCount = reviewService.getCompareCount(name,"나쁨");
             int MostNegativeCompareCount = reviewService.getCompareCount(name,"매우나쁨");
+            int NegativeCompareCount = reviewService.getCompareCount(name,"나쁨");
             int AllCompareCount = reviewService.getAllCompare(name);
 
-            System.out.print(AllCompareCount);
+            List<String> SelectDesimone = reviewService.getDesimone("드시모네");
 
             // 또박케어 5지선다 대답 비율
 
@@ -97,11 +114,10 @@ public class ReviewController {
             double NegativeComparePer = ((double) NegativeCompareCount / AllCompareCount) * 100;
             double MostNegativeComparePer = ((double) MostNegativeCompareCount / AllCompareCount) * 100;
 
-            List<String> SelectDesimone = reviewService.getDesimone("드시모네");
+
 
             //또박케어 데이터
             response.put("SelectDesimone",SelectDesimone);
-
             response.put("productName", productName);
             response.put("MostPositiveAnswerCount",MostPositiveAnswerCount);
             response.put("PositiveAnswerCount", PositiveAnswerCount);
@@ -118,6 +134,7 @@ public class ReviewController {
             response.put("NegativeCompareCount",NegativeCompareCount);
             response.put("MostNegativeCompareCount",MostNegativeCompareCount);
             response.put("AllCompareCount",AllCompareCount);
+
             //또박케어 선호도 퍼센트
             response.put("MostPositiveAnswerPer", Double.parseDouble(percentageFormat.format(MostPositiveAnswerPer)));
             response.put("PositiveAnswerPer", Double.parseDouble(percentageFormat.format(PositiveAnswerPer)));

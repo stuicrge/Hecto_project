@@ -15,9 +15,12 @@ from insertDB import insertDB
 
 import sys
 sys.path.append(r'C:\ReviewService\GptApiService')
+sys.path.append(r'C:\ReviewService\package')
 
 from gpt import gpt
 from updateDB import updateDB
+from dbconn import mysqlDbConnection, mysqlDbClose
+from gpt_badreview import gpt_badreview
 
 # csv파일에 담을 제품명,후기제목,후기내용,등록일자 리스트
 productlist = []
@@ -83,7 +86,7 @@ def reviewScrapping(before_date):
             datelist.append(date)
         
         try:
-            paging_button = driver.find_element(By.XPATH,'//*[@id="traceLogTarget"]/div[3]/div[2]/div/div[4]/button[2]')
+            paging_button = driver.find_element(By.XPATH, '//*[@id="traceLogTarget"]/div[3]/div[2]/div/div[4]/button[2]')
             time.sleep(2)
             if paging_button.is_displayed():
                 time.sleep(2)
@@ -104,7 +107,7 @@ def main():
     before_one_day = (now_date + relativedelta(days=-1)).date() # 하루 전
 
     # 페이지 이동
-    for i in range(13, len(product_li)):
+    for i in range(len(product_li)):
         # 각기 다른 상품 클릭 반복
         products = driver.find_element(By.XPATH, f'//*[@id="list0001"]/div/ul/li[{i+1}]/div/span[2]')
         print(i+1)
@@ -146,14 +149,28 @@ def main():
         csv_len = len(df)
         insertDB()
         gpt(csv_len)
-        updateDB(csv_len)
+        updateDB()
+        
+        dbConn = mysqlDbConnection('root', '0000', '127.0.0.1', 3306, 'reviewdb')
+        cursor = dbConn.cursor()
+        dbtotal_query = "select * from ttobak_review"
+        cursor.execute(dbtotal_query)
+        dbConn.commit()
+        dbtotal_len = cursor.fetchone()
+
+        for i in range(dbtotal_len-csv_len, dbtotal_len+1):
+            gpt_badreview(i)
+
+        cursor.close()
+        mysqlDbClose(dbConn)
+
     else:
         print("DataFrame is empty. No data to save.")
 
 # 스케줄러
 sched = BlockingScheduler(timezone='Asia/Seoul')
 
-sched.add_job(main, 'cron', hour='14',minute='35')  
+sched.add_job(main, 'cron', hour='0',minute='0')
 
 print('sched before~')
 try:

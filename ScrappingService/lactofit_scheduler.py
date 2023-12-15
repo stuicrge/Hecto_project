@@ -14,7 +14,7 @@ from apscheduler.schedulers.blocking import BlockingScheduler
 from insertDB_lactofit import insertDB_lactofit
 
 import sys
-sys.path.append(r'C:\localrepository\Hecto_project\package')
+sys.path.append(r'C:\ReviewService\GptApiService')
 
 from gpt_lactofit import gpt_lactofit
 from updateDB_lactofit import updateDB_lactofit
@@ -147,7 +147,7 @@ def reviewScrapping():
 # 스케줄러
 sched = BlockingScheduler(timezone='Asia/Seoul')
 
-sched.add_job(reviewScrapping, 'cron', hour='12',minute='0')  
+sched.add_job(reviewScrapping, 'cron', hour='0',minute='0')  
 
 print('sched before~')
 try:

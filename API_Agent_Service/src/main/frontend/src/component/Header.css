@@ -1,0 +1,47 @@
+.nav-tabs .nav-link.active {
+    background-color: #B0E0E6 !important; /* 활성화된 탭의 배경색을 강제로 설정 */
+    border-color: #B0E0E6 !important; /* 활성화된 탭의 테두리 색을 강제로 설정 */
+    border-bottom: 2px solid transparent !important; /* 하단 테두리 제거 */
+}
+
+.nav-tabs {
+    border-bottom: none !important;
+    display: flex;
+    justify-content: center;
+    margin-bottom: -1px;
+}
+
+.nav-tabs .nav-item {
+    margin-bottom: 0;
+    margin-right: 15px;
+}
+
+.nav-tabs .nav-link {
+    border:3px solid #B0E0E6;
+    border-top: none !important; /* 상단 테두리 제거 */
+    padding: 10px 20px;
+    font-size: 1.2em;
+    color: #000; /* 글씨 색상 검정색으로 변경 */
+    background-color: #fff; /* 기본 배경색 흰색으로 설정 */
+    border-radius: 0 0 0.5rem 0.5rem; /* 하단 모서리 둥글게 */
+}
+
+.nav-tabs .nav-link:hover, .nav-tabs .nav-link:active {
+    background-color: #B0E0E6 !important; /* 호버 및 활성화 시 배경색 변경 */
+    border-color: #B0E0E6 !important; /* 호버 및 활성화 시 테두리 색 변경 */
+}
+
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+    background-color: #B0E0E6; /* 활성화된 탭의 배경색 */
+    border-color: #B0E0E6; /* 활성화된 탭의 테두리 색 */
+    border-bottom: 2px solid transparent; /* 활성화된 탭의 하단 테두리 제거 */
+}
+
+.select_container {
+    display: flex;
+    justify-content: center;
+}
+
+.custom-select-width{
+    width: 450px;
+}

@@ -2,55 +2,58 @@ import React, {useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Nav, Navbar,Table} from 'react-bootstrap';
 import {Link} from "react-router-dom";
-import './Feedback.css';
+import './Feedback.module.css';
+import Header from "./Header";
 const FeedbackComponents = ({ mostnegFeedback, negFeedback,mostnegType,negType,mostnegImprove,negImprove }) => {
     return (
-        <div className="feedback_container">
-            <div className="mostneg-container">
-            <Table striped="columns">
-                <thead>
-                <tr>
-                    <th>#</th>
-                    <th>유형</th>
-                    <th>후기</th>
-                    <th>피드백</th>
-                </tr>
-                </thead>
-                <tbody>
-                {negType.map((type, index) => (
-                    <tr key={index}>
-                        <td>{index + 1}</td>
-                        <td>{type}</td>
-                        <td>{negFeedback[index]}</td>
-                        <td>{negImprove[index]}</td>
-                    </tr>
-                ))}
-                </tbody>
-            </Table>
-            </div>
-
-            <div className="neg-container">
-            <Table striped="columns">
-                <thead>
-                <tr>
-                    <th>#</th>
-                    <th>유형</th>
-                    <th>후기</th>
-                    <th>피드백</th>
-                </tr>
-                </thead>
-                <tbody>
-                {mostnegFeedback.map((review, index) => (
-                    <tr key={index}>
-                        <td>{index + 1}</td>
-                        <td>{mostnegType[index]}</td>
-                        <td>{review}</td>
-                        <td>{mostnegImprove[index]}</td>
-                    </tr>
-                ))}
-                </tbody>
-            </Table>
-            </div>
+        <div className="table_container">
+            {mostnegType.length > 0 && (
+                <div className="mostneg-container">
+                    <label htmlFor="mostnegTable" style={{ fontFamily: 'TAEBAEKfont', fontSize: '30px', textAlign: 'center'}}>매우 나쁨</label>
+                    <Table striped bordered hover size="sm" id="mostnegTable">
+                        <thead>
+                        <tr>
+                            <td>유형</td>
+                            <td>후기</td>
+                            <td>개선점</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {mostnegType.map((sentence, index) => (
+                            <tr key={index}>
+                                <td className="type-box">{sentence}</td>
+                                <td>{mostnegFeedback[index]}</td>
+                                <td>{mostnegImprove[index]}</td>
+                            </tr>
+                        ))}
+                        </tbody>
+                    </Table>
+                </div>
+            )}
+            <br/>
+            {negType.length > 0 && (
+                <div className="neg-container">
+                    <label htmlFor="negTable" style={{ fontFamily: 'TAEBAEKfont', fontSize: '30px', textAlign: 'center'}}>나쁨</label>
+                    <Table striped bordered hover size="sm" id="negTable">
+                        <thead>
+                        <tr>
+                            <td>유형</td>
+                            <td>후기</td>
+                            <td>개선점</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {negType.map((sentence, index) => (
+                            <tr key={index}>
+                                <td className="type-box2">{sentence}</td>
+                                <td>{negFeedback[index]}</td>
+                                <td>{negImprove[index]}</td>
+                            </tr>
+                        ))}
+                        </tbody>
+                    </Table>
+                </div>
+            )}
         </div>
     );
 };
@@ -58,12 +61,12 @@ const FeedbackComponents = ({ mostnegFeedback, negFeedback,mostnegType,negType,m
 const Feedback = () => {
     const [productName, setProductName] = useState('');
     const [selectProducts, setSelectProducts] = useState([]);
-    const [negFeedback, setNegativeFeedback] = useState('');
-    const [mostnegFeedback, setMostNegativeFeedback] =useState('');
-    const [mostnegType, setNegativeType] = useState('');
-    const [negType, setMostNegativeType] =useState('');
-    const [mostnegImprove, setNegativeImprove] = useState('');
-    const [negImprove, setMostNegativeImprove] =useState('');
+    const [negFeedback, setNegativeFeedback] = useState([]);
+    const [mostnegFeedback, setMostNegativeFeedback] =useState([]);
+    const [negType, setNegativeType] = useState([]);
+    const [mostnegType, setMostNegativeType] =useState([]);
+    const [negImprove, setNegativeImprove] = useState([]);
+    const [mostnegImprove, setMostNegativeImprove] =useState([]);
 
     const [showFeedbackComponents, setShowFeedbackComponents] = useState(false);
 
@@ -96,22 +99,12 @@ const Feedback = () => {
 
     return (
         <div>
-            <Navbar bg="dark" data-bs-theme="dark">
-                <Container>
-                    <Navbar.Brand as={Link} to="/">Home</Navbar.Brand>
-                    <Nav className="me-auto">
-                        <Nav.Link as={Link} to="/getCountByAnswer">또박케어 상품 후기 선호도</Nav.Link>
-                        <Nav.Link as={Link} to="/CompareReviews">타사 제품과 비교</Nav.Link>
-                        <Nav.Link as={Link} to="/getFeedbackReview">또박케어 상품의 개선점</Nav.Link>
-                    </Nav>
-                </Container>
-            </Navbar>
-            <br />
-            <h3>제품명: {productName}</h3>
+            <Header/>
+            <br/>
             <div className="select_container">
-                {/* Bootstrap-styled Dropdown for selecting a product */}
-                <select
-                    className="form-select custom-select-width" // oBotstrap class for styling select dropdown
+                <label htmlFor="productSelect" style={{ fontFamily: 'TAEBAEKfont', fontSize: '30px'}}>제품명:  </label>
+                <select id="productSelect"
+                    className="form-select custom-select-width" // Bootstrap class for styling select dropdown
                     value={productName}
 
                     onClick={()=>ReviewFeedback()}
@@ -126,6 +119,7 @@ const Feedback = () => {
                     ))}
                 </select>
             </div>
+            <br/>
             {showFeedbackComponents && (
                 <div>
                     <FeedbackComponents

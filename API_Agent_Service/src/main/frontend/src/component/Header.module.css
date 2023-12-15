@@ -1,0 +1,25 @@
+.home {
+    display: flex; /* Flexbox를 사용하여 내부 요소들을 유연하게 정렬 */
+    justify-content: center; /* 가로축을 기준으로 중앙 정렬 */
+    align-items: center; /* 세로축을 기준으로 중앙 정렬 */
+    flex-direction: column; /* 요소들을 세로로 쌓음 (이미지와 텍스트를 위 아래로 정렬) */
+    text-align: center; /* 텍스트를 가운데 정렬 */
+}
+
+.home img {
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+hr {
+    margin-bottom: 0;
+    border: 0;
+    background-color:#B0E0E6;
+    height: 5px;
+}
+
+.navigator {
+    display: flex;
+    justify-content: center;
+}
+

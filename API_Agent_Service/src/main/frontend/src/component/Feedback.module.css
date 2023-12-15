@@ -1,0 +1,13 @@
+.table-container {
+    width: 50%; /* 전체 테이블의 너비를 줄임 */
+    margin: auto; /* 테이블을 가운데 정렬 */
+}
+
+.table {
+    max-width: 100%; /* 테이블이 그릇 최대 100% 너비까지만 차지 */
+    font-size: 0.9em; /* 테이블 내부 텍스트 크기를 줄임 */
+}
+
+.table td, .table th {
+    padding: 8px; /* 셀 안쪽 여백을 줄임 */
+}

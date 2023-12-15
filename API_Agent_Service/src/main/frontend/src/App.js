@@ -4,7 +4,7 @@ import Compare from './component/Compare'
 import Answer from './component/Answer'
 import Feedback from './component/Feedback'
 import {BrowserRouter, Route, Routes} from "react-router-dom";
-import Main from "./component/Main";
+import Header from "./component/Header";
 
 
 function App() {
@@ -13,7 +13,7 @@ function App() {
       <div className="App">
         <BrowserRouter>
             <Routes>
-              <Route path="/" element={<Main/>}></Route>
+              <Route path="/" element={<Header/>}></Route>
               <Route path="/getCountByAnswer" element={<Answer/>}>  </Route>
               <Route path="/CompareReviews" element={<Compare/>}>  </Route>
                 <Route path="/getFeedbackReview" element={<Feedback/>}>  </Route>

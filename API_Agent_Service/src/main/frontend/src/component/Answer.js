@@ -1,28 +1,22 @@
 import React,  {useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Container, Nav, Navbar} from 'react-bootstrap';
 import 'chart.js/auto';
 import {Bar, Doughnut} from "react-chartjs-2";
-import './Answer.css';
-import {Link} from "react-router-dom";
-
+import styles from './Answer.module.css';
+import Header from "./Header";
 
 const AnswerComponent = ({mostposAnswerCount, positiveAnswerCount, normalAnswerCount,negativeAnswerCount,mostnegAnswerCount, allAnswerCounts }) => {
     return (
-        <div>
-            {/*<h2>Review Information for {productName}</h2>*/}
-            <p>총 갯수: {allAnswerCounts}</p>
-            <p>매우 좋음: {mostposAnswerCount}</p>
-            <p>좋음: {positiveAnswerCount}</p>
-            <p>보통: {normalAnswerCount}</p>
-            <p>나쁨: {negativeAnswerCount}</p>
-            <p>매우 나쁨: {mostnegAnswerCount}</p>
+        <div style={{ fontFamily: 'TAEBAEKfont', fontSize: '25px'}}>
+            <p>총 개수: {allAnswerCounts}개</p>
+            <p>매우 좋음: {mostposAnswerCount}개</p>
+            <p>좋음: {positiveAnswerCount}개</p>
+            <p>보통: {normalAnswerCount}개</p>
+            <p>나쁨: {negativeAnswerCount}개</p>
+            <p>매우 나쁨: {mostnegAnswerCount}개</p>
         </div>
     );
 };
-
-
-
 
 const Answer = () => {
 
@@ -71,57 +65,40 @@ const Answer = () => {
         labels: ['매우 좋음','좋음', '보통','나쁨','매우 나쁨'],
         datasets: [
             {
-                label: 'Answer Count',
+                label: '만족도',
                 data: [mostposAnswerCount, positiveAnswerCount, normalAnswerCount,  negativeAnswerCount, mostnegAnswerCount],
-                backgroundColor: ['#36A2EB', '#FF6384', '#4CAF50', '#FF5733', '#8A2BE2'], // Green for positive, Red for negative
+                backgroundColor: ['#36A2EB', '#FF6384', '#4CAF50', '#FF5733', '#8A2BE2'],
             },
         ],
     };
 
     return (
         <div>
-            <Navbar bg="dark" data-bs-theme="dark">
-                <Container>
-                    <Navbar.Brand as={Link} to="/">Home</Navbar.Brand>
-                    <Nav className="me-auto">
-                        <Nav.Link as={Link} to="/getCountByAnswer">또박케어 상품 후기 선호도</Nav.Link>
-                        <Nav.Link as={Link} to="/CompareReviews">타사 제품과 비교</Nav.Link>
-                        <Nav.Link as={Link} to="/getFeedbackReview">또박케어 상품의 개선점</Nav.Link>
-                    </Nav>
-                </Container>
-            </Navbar>
+            <Header/>
             <br />
-            <div>
-                {/* Existing Navbar and other components */}
-                <br />
-                <h3>제품명: {productName}</h3>
-                <div className="select_container">
-                    {/* Bootstrap-styled Dropdown for selecting a product */}
-                    <select
-                        className="form-select custom-select-width" // oBotstrap class for styling select dropdown
+            <div className="select_container">
+                <label htmlFor="productSelect" style={{ fontFamily: 'TAEBAEKfont', fontSize: '30px'}}>제품명:  </label>
+                <select id="productSelect"
+                        className="form-select custom-select-width"
                         value={productName}
 
                         onClick={()=>getCountByAnswer()}
 
                         onChange={(e) => setProductName(e.target.value)
                         }
-                    >
-                        {selectProducts.map((product, index) => (
-                            <option key={index} value={product}>
-                                {product}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-                {/* Existing showAnswerComponent logic and components */}
+                >
+                    {selectProducts.map((product, index) => (
+                        <option key={index} value={product}>
+                            {product}
+                        </option>
+                    ))}
+                </select>
             </div>
-
-
 
             {showAnswerComponent && (
 
-                <div className="c_container">
-                    <div className="Answercontainer">
+                <div className={styles.data_container}>
+                    <div className={styles.count_container}>
                         <AnswerComponent
                             allAnswerCounts={allAnswerCounts}
                             mostposAnswerCount={mostposAnswerCount}
@@ -132,13 +109,11 @@ const Answer = () => {
                         />
                     </div>
 
-                    <div className="chartcontainer">
-                    <div className="Barchartcontainer">
-                        <Bar data={chartData} />
+                    <div className={styles.chart_container}>
+                        <Bar data={chartData} className={styles.Barchart}/>
                     </div>
-                    <div className="Doughnutchartcontainer">
-                        <Doughnut data={chartData} />
-                    </div>
+                    <div className={styles.chart_container}>
+                        <Doughnut data={chartData} className={styles.Doughnutchart} />
                     </div>
                 </div>
             )}

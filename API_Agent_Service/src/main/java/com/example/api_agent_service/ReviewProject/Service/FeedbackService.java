@@ -27,9 +27,10 @@ public class FeedbackService {
     public List<String> getFeedbackImprove(String productName, String gpt_answer){
         return feedbackMapper.selectFeedbackImprove(productName, gpt_answer);
     }
-
     public List<String> getProductName(){
         return feedbackMapper.selectAnswerName();
     }
+
+
 
 }

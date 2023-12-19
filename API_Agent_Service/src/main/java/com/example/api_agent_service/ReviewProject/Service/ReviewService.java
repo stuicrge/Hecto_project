@@ -36,7 +36,5 @@ public class ReviewService {
         return reviewMapper.selectCompareCount(name);
     }
 
-    public List<String> getFeedback(String productName, String gpt_answer) {
-        return reviewMapper.selectFeedbackContent(productName,gpt_answer);
-    }
+    public List<String> getDesimone(String productName){return reviewMapper.selectReviewsWithProductName(productName);}
 }

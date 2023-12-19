@@ -20,7 +20,4 @@ public interface FeedbackMapper {
     @Select ("SELECT distinct productName FROM TTOBAK_BADREVIEW")
     List<String> selectAnswerName();
 
-
-
-
 }

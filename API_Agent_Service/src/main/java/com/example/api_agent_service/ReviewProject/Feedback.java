@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class Feedback {
+
     private String productName;
     private String review;
     private String gpt_answer;

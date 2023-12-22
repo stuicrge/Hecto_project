@@ -1,9 +1,10 @@
 import React, {useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Container, Nav, Navbar,Table} from 'react-bootstrap';
-import {Link} from "react-router-dom";
+import {Table} from 'react-bootstrap';
 import './Feedback.module.css';
 import Header from "./Header";
+
+
 const FeedbackComponents = ({ mostnegFeedback, negFeedback,mostnegType,negType,mostnegImprove,negImprove }) => {
     return (
         <div className="table_container">

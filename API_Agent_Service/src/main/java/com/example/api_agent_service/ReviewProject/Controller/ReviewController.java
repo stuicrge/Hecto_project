@@ -11,10 +11,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
@@ -30,9 +28,9 @@ public class ReviewController {
     private ReviewService reviewService;  // ReviewService는 reviewMapper를 사용하는 서비스 클래스입니다.
 
 
-
+    // Swagger사용을 위한 어노테이션들 (@Operation)(ApiResponse)
     @Operation(summary = "제품별 리뷰 통계 수집")
-    @ApiResponse(responseCode = "200", description = "성공적인 응답", content = @Content(schema = @Schema(implementation = ReviewDTO.class)))
+    @ApiResponse(responseCode = "200", description = "성공적인 응답", content = @Content(schema = @Schema(implementation = ReviewDTO.class))) // Schema 구조를 보여주는 어노테이션
     @GetMapping("/getCountByAnswer")
     public Map<String, Object> getCountByAnswers(@Parameter(description = "조회할 제품명") @RequestParam("productName") String productName) {
 
@@ -41,7 +39,7 @@ public class ReviewController {
 
         try {
 
-            // reviewService를 통해 getCountByAnswer 함수 호출
+            // reviewService를 통해 getCount 함수 호출
             int MostPositiveAnswerCount = reviewService.getCount(productName, "매우좋음");
             int PositiveAnswerCount = reviewService.getCount(productName, "좋음");
             int NormalAnswerCount = reviewService.getCount(productName,"보통");

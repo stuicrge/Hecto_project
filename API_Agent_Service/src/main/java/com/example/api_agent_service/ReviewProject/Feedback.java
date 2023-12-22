@@ -1,7 +1,7 @@
 package com.example.api_agent_service.ReviewProject;
 
 import lombok.Data;
-
+// GPTSERVICE에서 부정 후기 개선점 리뷰 DB
 @Data
 public class Feedback {
 

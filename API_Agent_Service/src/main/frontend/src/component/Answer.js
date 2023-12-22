@@ -19,7 +19,6 @@ const AnswerComponent = ({mostposAnswerCount, positiveAnswerCount, normalAnswerC
 };
 
 const Answer = () => {
-
     const [productName, setProductName] = useState('');
     const [selectProducts, setSelectProducts] = useState([]);
     const [mostposAnswerCount, setMostPositiveAnswerCount] = useState(null);

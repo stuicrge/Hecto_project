@@ -1,7 +1,4 @@
 package com.example.api_agent_service.ReviewProject.Controller;
-
-import com.example.api_agent_service.ReviewProject.Feedback;
-import com.example.api_agent_service.ReviewProject.Review;
 import com.example.api_agent_service.ReviewProject.DTO.FeedbackDTO;
 import com.example.api_agent_service.ReviewProject.Service.FeedbackService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -33,7 +30,7 @@ public class FeedbackController {
         Map<String, Object> response = new HashMap<>();
 
         try {
-            // reviewService를 통해 getCountByAnswer 함수 호출
+            // reviewService를 통해 getFeedbackReview 함수 호출
 
             List<String> NegativeReviewFeedback = feedbackService.getFeedbackReview(productName,"나쁨");
             List<String> MostNegativeReviewFeedback = feedbackService.getFeedbackReview(productName,"매우나쁨");
@@ -41,9 +38,10 @@ public class FeedbackController {
 
             response.put("NegativeReviewFeedback",NegativeReviewFeedback);
             response.put("MostNegativeReviewFeedback",MostNegativeReviewFeedback);
-
             response.put("SelectProduct",SelectProduct);
             response.put("productName",productName);
+
+            // reviewService를 통해 getFeedbackType 함수 호출
 
             List<String> NegativeTypeFeedback = feedbackService.getFeedbackType(productName,"나쁨");
             List<String> MostNegativeTypeFeedback = feedbackService.getFeedbackType(productName, "매우나쁨");
@@ -51,7 +49,7 @@ public class FeedbackController {
             response.put("NegativeTypeFeedback" ,NegativeTypeFeedback);
             response.put("MostNegativeTypeFeedback",MostNegativeTypeFeedback);
 
-
+            // reviewService를 통해 getFeedbackImprove 함수 호출
             List<String> NegativeImproveFeedback = feedbackService.getFeedbackImprove(productName, "나쁨");
             List<String> MostNegativeImproveFeedback = feedbackService.getFeedbackImprove(productName,"매우나쁨");
 

@@ -29,7 +29,7 @@ public class FeedbackControllerTest {
     @Test
     public void testGetFeedbackByBadReview() {
         // Arrange
-        String productName = "Test Product";
+        String productName = "오투부스터";
         List<String> negativeFeedback = Arrays.asList("Bad review 1", "Bad review 2");
         List<String> mostNegativeFeedback = Arrays.asList("Worst review 1", "Worst review 2");
 
